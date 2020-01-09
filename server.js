@@ -66,13 +66,31 @@ app.delete("/deleteHero/:name", function(req,res){
 
 app.get("/getHero/:name",function(req,res){
     var sName = req.params.name;
-    console.log("apple "+sName)
+    console.log("Get hero "+sName)
     model.find({name: sName},function(err,data){
         if(err){
             res.send(err);
         }else{
             console.log(typeof data + ': ' + data);
             res.json(data);
+        }
+    })
+})
+
+app.put("/updateHero/:oldName",function(req,res){
+    var oldName = req.params.oldName;
+    var name = req.body.name;
+    var universe = req.body.universe;
+    console.log(req.body);
+    console.log("Search name: "+oldName+" new values: "+name+" "+universe);
+    var mQuery = { name: oldName };
+    var newHero = { $set: { name: name, universe: universe}}
+    model.updateOne(mQuery,newHero,function(err,result){
+        if(err){
+            res.send(err);
+        }else{
+            console.log(name+" was updated");
+            res.sendStatus("ok");
         }
     })
 })
