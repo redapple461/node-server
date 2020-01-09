@@ -28,6 +28,7 @@ var db = mongo.connect('mongodb://localhost:27017/ToursOfHeroDB',function(err,re
 var Schema = mongo.Schema;
 
 var HeroesSchemna = new Schema({
+    id: { type: Number},
     name: { type: String },
     universe: {type: String },
 },{ versionKey: false});
@@ -47,13 +48,17 @@ app.get("/getHeroes",function(req,res){
 
 app.post("/addHero", function(req,res){
     if(!req.body) res.sendStatus(400);
-    console.log('hero to post: '+req.body);
-    var hero = {name: req.body.name, universe: req.body.universe}
-    model.insertMany(hero,function(err,res){
-        if(err){
-            return console.log(err);
-        }
-    })
+    console.log('hero to post: ' + req.body.name + ', '+req.body.universe);
+    model.countDocuments({},function(err,c){
+        console.log("Count is : "+c);
+        var hero = {id: c, name: req.body.name, universe: req.body.universe};
+        model.insertMany(hero,function(err,res){
+            if(err){
+                return console.log(err);
+            }
+        })
+    });
+
 })
 
 app.delete("/deleteHero/:name", function(req,res){
@@ -72,12 +77,13 @@ app.get("/getHero/:name",function(req,res){
             res.send(err);
         }else{
             console.log(typeof data + ': ' + data);
-            res.json(data);
+            res.send(data);
         }
     })
 })
 
 app.put("/updateHero/:oldName",function(req,res){
+    if(!req.body) res.sendStatus(400).send({error: "body is missed"});
     var oldName = req.params.oldName;
     var name = req.body.name;
     var universe = req.body.universe;
@@ -90,7 +96,7 @@ app.put("/updateHero/:oldName",function(req,res){
             res.send(err);
         }else{
             console.log(name+" was updated");
-            res.sendStatus("ok");
+            res.status(200).send({ message: "hero was updated!" });
         }
     })
 })
