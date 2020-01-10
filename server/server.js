@@ -3,39 +3,39 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mongo = require('mongoose');
 var app = express();
-var port = 3000;
+
 var cors = require('cors')
+var config = require('./config/config')
 
 app.use(bodyParser());
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors())
-var db = mongo.connect('mongodb://localhost:27017/ToursOfHeroDB',function(err,response){
+app.use('',require("./routers/mapping"))
+
+
+/**
+ *        response.header("Access-Control-Allow-Origin", "http://localhost:4200"); // update to match the domain you will make the request from
+        response.header("Access-Control-Allow-Headers",
+         "Origin, X-Requested-With, Content-Type, Accept");
+         var db = mongo.connect('mongodb://localhost:27017/ToursOfHeroDB',function(err,response){
     if(err){
         console.log(err)
     }else{
         console.log('Connect to '+db,' + ',response)
     }
 })
-/**
- *        response.header("Access-Control-Allow-Origin", "http://localhost:4200"); // update to match the domain you will make the request from
-        response.header("Access-Control-Allow-Headers",
-         "Origin, X-Requested-With, Content-Type, Accept");
  */
 
 
 
-var Schema = mongo.Schema;
+// var Schema = mongo.Schema;
 
-var HeroesSchemna = new Schema({
-    id: { type: Number},
-    name: { type: String },
-    universe: {type: String },
-},{ versionKey: false});
 
-var model = mongo.model('heroes',HeroesSchemna,'heroes');
 
-app.get("/getHeroes",function(req,res){
+// var model = mongo.model('heroes',HeroesSchemna,'heroes');
+
+/*app.get("/getHeroes",function(req,res){
     model.find({},function(err,data){
         if(err){
             res.send(err);
@@ -100,8 +100,8 @@ app.put("/updateHero/:oldName",function(req,res){
         }
     })
 })
-
-
-app.listen(3000,function(){
-    console.log('Server listening on port 3000')
+*/
+var port = config.apiPort.port
+app.listen(port,function(){
+    console.log(`Server listening on port ${port}`)
 })
