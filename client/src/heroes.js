@@ -1,4 +1,3 @@
-import React from 'react'
 
 export const Heroes = [
     {id: 1, name: "Ironman",universe: "Marvel"},

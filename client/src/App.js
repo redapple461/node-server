@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import {useRoutes} from './routes.js'
 import {BrowserRouter as Router} from 'react-router-dom'
+import 'materialize-css'
 
 function App() {
   const routes = useRoutes();

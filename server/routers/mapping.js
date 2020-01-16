@@ -11,9 +11,10 @@ router.get('/getHeroes', async (req,res)=>{
             console.log(typeof data + ': ' + data);
             res.json(data);
         }
-    })
-    
+    })    
 })
+
+
 
 // localhost:3000/addHero
 router.post('/addHero', async(req,res)=>{
@@ -49,7 +50,11 @@ router.delete('/deleteHero/:name', async (req,res) => {
     if(!req.body) res.sendStatus(400);
     console.log('hero to delete: '+req.params.name);
     Hero.deleteOne({name: req.params.name}, function(err,res){
-        if (err) return console.log(err);
+        if (err){
+            res.send(err);
+        }else{
+            res.sendStatus(200).send({message:"Hero was deleted"})
+        }
     });
 })
 

@@ -1,5 +1,18 @@
-li.dashboard{
+.dashboard{
     display: inline-block;
-    margin-right: 10px;
 }
-
+.dashboard_btn{
+    width: 370px;
+    height: 150px;
+    margin-right: 10%;
+    font-size: 35px;
+}
+.dashboard_btn:hover{
+    color: tomato;
+}
+input{
+    width: 50%;
+}
+label{
+    margin-right: 35px;
+}

@@ -5,7 +5,7 @@ export class MessagePage extends React.Component{
         return(
             <div>
                 <h2> 
-Message service will be added along with all the functionality </h2>
+Message service now represent by toast messages </h2>
             </div>
         )
     }

@@ -10,16 +10,14 @@ import { HeroDetailPage } from './pages/heroDetailPage'
 export const useRoutes = () => {
     return (
         <Switch>
-            <Route path="/main" >
-                <MainPage/>
+            <Route path="/main" component={MainPage}>
             </Route>
-            <Route path="/heroes">
-                <HeroList/>
+            <Route path="/heroes" component={HeroList} >
             </Route>
             <Route path="/notFound">
                 <NotFound/>
             </Route>
-            <Route path="/detailHero/:id" component={HeroDetailPage}>
+            <Route path="/detailHero/:name" component={HeroDetailPage}>
             </Route>
             <Route path="/" >
                 <Redirect to="/main" />
