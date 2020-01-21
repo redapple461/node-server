@@ -46,14 +46,15 @@ router.get('/getHero/:name', async (req,res)=>{
 })
 
 // localhost:3000/deleteHero/:name
-router.delete('/deleteHero/:name', async (req,res) => {
-    if(!req.body) res.sendStatus(400);
+router.delete('/deleteHero/:name', async (req,ress) => {
+    // if(!req.body) res.sendStatus(400);
     console.log('hero to delete: '+req.params.name);
-    Hero.deleteOne({name: req.params.name}, function(err,res){
+    Hero.deleteOne({name: req.params.name}, function(err){
         if (err){
-            res.send(err);
+            ress.send(err);
         }else{
-            res.sendStatus(200).send({message:"Hero was deleted"})
+            console.log("all is")
+            ress.send({msg: "all is ok"})
         }
     });
 })

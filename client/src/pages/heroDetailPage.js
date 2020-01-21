@@ -18,7 +18,7 @@ export class HeroDetailPage extends React.Component{
     }
 
     getHero(){
-        fetch("http://localhost:3000/getHero/"+this.props.match.params.name)
+        fetch("http://localhost:4000/getHero/"+this.props.match.params.name)
            .then(res => res.json())
            .then(resHero => {
                this.setState({
@@ -26,6 +26,7 @@ export class HeroDetailPage extends React.Component{
                 universe: resHero[0].universe,
                 value: resHero[0].name
                });
+               window.M.toast({html: this.state.value+" details"})
            })
    }
 
@@ -39,7 +40,7 @@ export class HeroDetailPage extends React.Component{
             universe: this.state.universe
         }
         try{
-            fetch("http://localhost:3000//updateHero/"+this.state.hero.name, {
+            fetch("http://localhost:4000//updateHero/"+this.state.hero.name, {
                 method: 'PUT', 
                 body: JSON.stringify(data),
                 headers: {

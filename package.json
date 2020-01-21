@@ -1,0 +1,37 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "react-app",
+  "main": "./server/server.js",
+  "dependencies": {
+    "concurrently": "^5.0.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.9"
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server/server.js",
+    "server": "npm start",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redapple461/node-server.git"
+  },
+  "keywords": [
+    "react",
+    "node",
+    "express"
+  ],
+  "author": "DBalakishyieu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redapple461/node-server/issues"
+  },
+  "homepage": "https://github.com/redapple461/node-server#readme"
+}

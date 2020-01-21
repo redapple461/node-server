@@ -12,7 +12,7 @@ class HeroList extends React.Component{
         this.deleteHero = this.deleteHero.bind(this);
     }
     getHeroes(){
-        fetch("http://localhost:3000/getHeroes")
+        fetch("http://localhost:4000/getHeroes")
             .then(res => res.json())
             .then(heroes => this.setState({Heroes: heroes}))
     }
@@ -28,13 +28,13 @@ class HeroList extends React.Component{
             universe: this.state.newUniverse 
         };
         try{
-            fetch("http://localhost:3000/addHero", {
+            fetch("http://localhost:4000/addHero", {
                 method: 'POST', 
                 body: JSON.stringify(data),
                 headers: {
                   'Content-Type': 'application/json'
                 }
-            }).then(res => window.M.toast({html: res.status}))
+            })
         }catch(e){
             window.M.toast(e);
         }
@@ -67,11 +67,12 @@ class HeroList extends React.Component{
         
     }
     deleteHero(name,id){
-        fetch("http://localhost:3000/deleteHero/"+name,{
+        fetch("http://localhost:4000/deleteHero/"+name,{
             method: 'DELETE'
         });
         console.log()
         this.setState({Heroes: this.state.Heroes.slice(0,id-1).concat(this.state.Heroes.slice(id+1,this.state.Heroes.length))})
+        window.M.toast({html: "Hero "+name+" was deleted"})
     }
     render(){
         return(

@@ -11,13 +11,14 @@ export  class MainPage extends React.Component {
     }
     
     getHeroes(){
-        fetch("http://localhost:3000/getHeroes")
+        fetch("http://localhost:4000/getHeroes")
             .then(res => res.json())
             .then(heroes => this.setState({lastHeroes: heroes.slice(heroes.length-4,heroes.length).reverse()}))
        // window.M.toast({html: "Data is fetched"});
     }
     componentDidMount(){
-        this.getHeroes();        
+        this.getHeroes();  
+        window.M.toast({html: "Heroes are fetched"})      
     }
     componentDidUpdate(){
         this.getHeroes();    
@@ -86,6 +87,8 @@ export  class MainPage extends React.Component {
                         <span>Both</span>
                 </label>
               </div>
+              <div className="board">
+              <h2>Last heroes</h2>
               <ul>
                     {this.state.lastHeroes.map((hero)=>{
                         return  <div className="dashboard" key={hero.id}>
@@ -97,6 +100,7 @@ export  class MainPage extends React.Component {
                                 </div>
                     })}
               </ul>
+              </div>
             </div>
      
        </div>
