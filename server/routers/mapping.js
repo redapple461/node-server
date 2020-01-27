@@ -22,12 +22,14 @@ router.post('/addHero', async(req,res)=>{
     console.log('hero to post: ' + req.body.name + ', '+req.body.universe);
     Hero.countDocuments({},function(err,c){
         console.log("Count is : "+c);
+        if(!req.body.universe){
+            req.body.universe = "";
+        }
         var hero = {id: c+1, name: req.body.name, universe: req.body.universe};
-        Hero.insertMany(hero,function(err,res){
-            if(err){
-                return console.log(err);
-            }
+        Hero.insertMany(hero,function(err,ress){
+            res.send(hero)
         })
+      
     });
 })
 
@@ -53,7 +55,6 @@ router.delete('/deleteHero/:name', async (req,ress) => {
         if (err){
             ress.send(err);
         }else{
-            console.log("all is")
             ress.send({msg: "all is ok"})
         }
     });

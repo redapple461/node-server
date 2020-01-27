@@ -1,31 +1,49 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import './css/heroList.css'
+import { useSelector, useDispatch } from 'react-redux'
+import * as actions from "../actions"
+import { Button } from "../components/button"
+import { RadioButton } from "../components/radio"
+import { HeroesList } from '../components/hList'
+import { EmptyHeroes } from '../components/emptyHeroes'
 
-class HeroList extends React.Component{
-    constructor(props){
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.goBack = this.goBack.bind(this);
-        this.state = {name: "", newUniverse: "",Heroes: []};
-        this.addHero = this.addHero.bind(this);
-        this.deleteHero = this.deleteHero.bind(this);
+const HeroList = (props ) => {
+    const heroes = useSelector(state => state.heroes)
+    const universe = useSelector(state => state.searchUniverse)
+    const isUnLoad = useSelector( state => state.noHeroes)
+    const heroToAdd = useSelector(state => state.addHero)
+    const isLoad = useSelector(state => state.isLoad)
+    const dispatch = useDispatch()
+
+    async function fetchData() {
+        await  fetch("http://localhost:4000/getHeroes")
+        .then(res => res.json())
+        .then(heroes => {
+            dispatch(actions.getData(heroes));
+        });
+      }
+
+    useEffect(() => {
+        if(isLoad)  
+        dispatch(actions.clearDetailHero())
+        if(isUnLoad){
+            fetchData()
+            dispatch(actions.loadComplete())
+        }
+    })
+
+    let heroList;
+    if(heroes.length){
+        heroList =  <HeroesList heroes = { heroes } universe = { universe } dispatch={ dispatch }/>
+    }else{
+        heroList = <EmptyHeroes/>
     }
-    getHeroes(){
-        fetch("http://localhost:4000/getHeroes")
-            .then(res => res.json())
-            .then(heroes => this.setState({Heroes: heroes}))
-    }
-    componentDidMount(){
-        this.getHeroes();      
-    }
-    handleChange(event){
-        this.setState({name: event.target.value});
-    }
-    postHero(hero){
+
+    const addHero = async () => {
         const data = {
-            name: this.state.name,
-            universe: this.state.newUniverse 
+            name: heroToAdd.name,
+            universe: heroToAdd.universe 
         };
         try{
             fetch("http://localhost:4000/addHero", {
@@ -34,100 +52,30 @@ class HeroList extends React.Component{
                 headers: {
                   'Content-Type': 'application/json'
                 }
-            })
+            }).then(res => res.json())
+              .then(res => dispatch(actions.addHero(res)))
+            window.M.toast({html: "Hero "+heroToAdd.name+" was added"})
         }catch(e){
             window.M.toast(e);
         }
     }
-    addHero(){
-        this.state.Heroes.push({
-            id:  this.state.Heroes.length+1,
-            name: this.state.name,
-            universe: this.state.newUniverse
-        });
-        this.postHero({
-            name: this.state.name,
-            universe: this.state.newUniverse
-        });
-       
-        this.setState({Heroes: this.state.Heroes});
-        if(window.M){
-            window.M.toast({html: "Hero was added: "+this.state.newUniverse+" "+this.state.name});
-        }           
-    }
-
-    onRadioChange = (e) => {
-        this.setState({
-            newUniverse: e.target.value
-        });
-    }
-
-    goBack(){
-        this.props.history.goBack();
-        
-    }
-    deleteHero(name,id){
-        fetch("http://localhost:4000/deleteHero/"+name,{
-            method: 'DELETE'
-        });
-        console.log()
-        this.setState({Heroes: this.state.Heroes.slice(0,id-1).concat(this.state.Heroes.slice(id+1,this.state.Heroes.length))})
-        window.M.toast({html: "Hero "+name+" was deleted"})
-    }
-    render(){
-        return(
+ 
+    
+    return(
+        <div>
+            <h1> Heroes List</h1>
+            <Link to="/main"> <Button className="waves-effect waves-light btn" text="Dashboard"/></Link>
+           {heroList}
             <div>
-                <h1> Heroes List</h1>
-                <Link to="/main"> <button className="waves-effect waves-light btn">Dashboard</button></Link>
-                <ul>
-                    {this.state.Heroes.filter(hero => {
-                        return hero.universe.toLowerCase().indexOf(this.props.location.state.universe.toLowerCase()) !== -1;
-                    }).map((hero)=>{
-                        return <div key={hero.id}>
-                                    <Link to={"/detailHero/"+hero.name}
-                                    >
-                                    <button className="waves-effect orange darken-1 btn list_btn">
-                                        {hero.id}: {hero.name}
-                                    </button> 
-                                    </Link>
-                                    <button 
-                                        className="waves-effect red btn" 
-                                        onClick ={() => this.deleteHero(hero.name,hero.id)}
-                                    >
-                                           x
-                                    </button>
-                                </div>
-                    })}
-                </ul>
-                <div>
-                    Add new hero
-                    <input type="text" value={this.state.name} onChange={this.handleChange}></input>
-                    <button className="waves-effect waves-light btn" onClick={this.addHero}>add hero</button>
-                    <label>
-                        <input 
-                            className="with-gap" 
-                            name="group1" type="radio" 
-                            value="Marvel" 
-                            onChange={this.onRadioChange}
-                        />
-                        <span>Marvel</span>
-                        </label>
-                        <label>
-                                <input 
-                                    className="with-gap"
-                                    name="group1" 
-                                    type="radio"
-                                    value="DC"
-                                    onChange={this.onRadioChange}
-                                />
-                                <span>DC</span>
-                        </label>
-                     </div>
-
-                <button className="waves-effect waves-light btn" onClick={this.goBack}>Back</button>
+                Add new hero
+                <input type="text" onChange={(e)=> dispatch(actions.updateAddHeroName(e.target.value))}></input>
+                <Button className="waves-effect waves-light btn" onClick={addHero} text="Add hero"/>
+                <RadioButton  className="with-gap" value="Marvel" text="Marvel"  dispatch={()=> dispatch(actions.updateAddHeroUniverse("Marvel"))}/>
+                <RadioButton  className="with-gap" value="DC" text="DC"   dispatch={()=> dispatch(actions.updateAddHeroUniverse("DC"))}/>
             </div>
-        )
-    }
-}
 
+            <Button text="Go back" className="waves-effect waves-light btn" onClick={() => props.history.goBack()}/>
+        </div>
+    )
+}
 export default HeroList;

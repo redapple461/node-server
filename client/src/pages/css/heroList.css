@@ -10,3 +10,8 @@ hr{
      size : 2px ;
      color: blue
 }
+
+.error{
+    font-size: 20px;
+    font-family: sans-serif;
+}

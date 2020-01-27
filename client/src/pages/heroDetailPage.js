@@ -1,127 +1,89 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './css/heroDetail.css'
+import { useSelector, useDispatch } from 'react-redux'
+import * as actions from '../actions'
+import { NoPage } from '../components/404'
+import {  Details } from '../components/detailPage'
+import { RadioButton } from '../components/radio'
+import { Button } from '../components/button'
 
 
-export class HeroDetailPage extends React.Component{
-    constructor(props){
-        super(props);
-        this.goBack = this.goBack.bind(this);
-        this.save = this.save.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.state = {value: "", universe: "",hero: {}};
-    }
-    handleChange(event){
-        this.setState({value: event.target.value});
-    }
-    goBack(){
-        this.props.history.goBack();
-    }
 
-    getHero(){
-        fetch("http://localhost:4000/getHero/"+this.props.match.params.name)
-           .then(res => res.json())
-           .then(resHero => {
-               this.setState({
-                hero: resHero[0],
-                universe: resHero[0].universe,
-                value: resHero[0].name
-               });
-               window.M.toast({html: this.state.value+" details"})
-           })
-   }
-
-   componentDidMount(){
-       this.getHero();
-   }
-
-    save(){
-        const data ={
-            name: this.state.value,
-            universe: this.state.universe
-        }
+export const HeroDetailPage = (props) => {
+   
+    const detailHero = useSelector(state => state.detailHero)
+    const dispatch = useDispatch();
+    const isLoad = useSelector(state => state.isLoad)
+    async function fetchData() {
         try{
-            fetch("http://localhost:4000//updateHero/"+this.state.hero.name, {
-                method: 'PUT', 
-                body: JSON.stringify(data),
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-            })
+            await fetch('http://localhost:4000/getHero/'+props.match.params.name)
+            .then(res => res.json())
+            .then(res => dispatch(actions.initDetailHero(res[0])));
         }catch(e){
-            window.M.toast(e);
+            
         }
-        window.M.toast({html: "Hero was updated: "+this.state.value+" "+this.state.universe});
-        this.props.history.goBack();     
-    }
+      }
+    const goBack = () => {
+   
+        props.history.goBack()
 
-    onRadioChange = (e) => {
-        this.setState({
-            universe: e.target.value
-        })
-    }
+      
+    }  
 
-    render(){
-        return(
-            <div>
-                <h1>{this.state.hero.name} details</h1>
-                <div>
-                    <strong> id: {this.state.hero.id} </strong><br/>
-                    <strong> Name: {this.state.hero.name} </strong><br/>
-                    <strong> Universe: {this.state.hero.universe} </strong>
-                </div>
-                <div className="form">
-                    <p> Type new name of hero and choose his universe</p>
-                    <input type="text" value={this.state.value} onChange={this.handleChange}></input>
-                    <div>
-                <label>
-                        <input 
-                            className="with-gap" 
-                            name="group1" type="radio" 
-                            value="Marvel" 
-                            checked={this.state.universe === "Marvel"}
-                            onChange={this.onRadioChange}
-                        />
-                        <span>Marvel</span>
-                </label>
-                <label>
-                        <input 
-                            className="with-gap"
-                            name="group1" 
-                            type="radio"
-                            value="DC"
-                            checked={this.state.universe === "DC"}
-                            onChange={this.onRadioChange}
-                        />
-                        <span>DC</span>
-                </label>
-                <label>
-                        <input
-                            className="with-gap"
-                            name="group1"
-                            type="radio"
-                            value="" 
-                            checked={this.state.universe === ""}
-                            onChange={this.onRadioChange}
-                        />
-                        <span>Both</span>
-                </label>
-              </div>
-                </div>
-                
-                <button
-                    className="waves-effect waves-light btn" type="button" 
-                    onClick={this.goBack}
-                 >
-                     Back
-                </button>
-                <button 
-                    className="waves-effect waves-light btn" 
-                    type="button" 
-                    onClick={this.save}
-                 >
-                     Save
-                </button>
-            </div>
+    useEffect(()=>{
+            if(!isLoad){
+                fetchData()
+                dispatch(actions.isLoad())
+            }
+    })
+
+
+    if(!detailHero){
+        return (
+            <NoPage name = {props.match.params.name} />
         )
     }
+    //               onChange={(e) => dispatch(actions.updateUniverse(e.target.value))}
+    return(
+        <div>
+
+                <Details name = {detailHero.name} id={detailHero.id} universe={detailHero.universe}/>
+                <div className="form">
+                    <p> Type new name of hero and choose his universe</p>
+                    <input
+                     type="text" 
+                     placeholder={detailHero.name}
+                     onChange={(e) => {dispatch(actions.updateName(e.target.value))}}
+                    ></input>
+                    <div>
+                        <RadioButton 
+                                className ="with-gap"
+                                value="Marvel"
+                                text = "Marvel"
+                                checked = {detailHero.universe === "Marvel"}
+                                dispatch = { () =>  dispatch(actions.updateUniverse("Marvel"))}
+                            />
+                        <RadioButton 
+                            className ="with-gap"
+                            value="DC"
+                            text = "DC"
+                            checked = {detailHero.universe === "DC"}
+                            dispatch = { () =>  dispatch(actions.updateUniverse("DC"))}
+                        />
+                    </div>
+                </div>
+                
+                <Button
+                    className="waves-effect waves-light btn" type="button" 
+                    onClick={() => {goBack()} }
+                    text = "Back"
+                 />
+                <Button 
+                    className="waves-effect waves-light btn" 
+                    type="button" 
+                    onClick={() => {dispatch(actions.updateHero())}}
+                    text = "Save"
+                 />
+            </div>
+    )
 }

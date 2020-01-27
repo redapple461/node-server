@@ -1,109 +1,89 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Link} from 'react-router-dom'
 import './css/mainPage.css'
+import { useSelector, useDispatch } from 'react-redux'
+import * as actions from "../actions"
+import {  Button } from '../components/button'
+import {  RadioButton } from '../components/radio'
+import { Dashboard } from '../components/dashboard'
+import { EmptyHeroes } from '../components/emptyHeroes'
+
+export const MainPage = () => {
+    const universe =  useSelector(state => state.searchUniverse);
+    const heroes = useSelector(state => state.heroes.slice(state.heroes.length-4,state.heroes.length).reverse());
+    const dispatch = useDispatch();
+    const isUnLoad = useSelector( state => state.noHeroes)
+    const isLoad = useSelector(state => state.isLoad)
 
 
-export  class MainPage extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {universe: "",lastHeroes: []};
-      //  this.getHeroes();
-    }
-    
-    getHeroes(){
-        fetch("http://localhost:4000/getHeroes")
-            .then(res => res.json())
-            .then(heroes => this.setState({lastHeroes: heroes.slice(heroes.length-4,heroes.length).reverse()}))
-       // window.M.toast({html: "Data is fetched"});
-    }
-    componentDidMount(){
-        this.getHeroes();  
-        window.M.toast({html: "Heroes are fetched"})      
-    }
-    componentDidUpdate(){
-        this.getHeroes();    
-    }
-    onRadioChange = (e) => {
-        this.setState({
-            universe: e.target.value
+    async function fetchData() {
+        await  fetch("http://localhost:4000/getHeroes")
+        .then(res => res.json())
+        .then(heroes => {
+            dispatch(actions.getData(heroes));
         });
-        if(e.target.value){
-            window.M.toast({html: "Heroes will be displayed from : "+e.target.value+" universe"});
-        }else{
-            window.M.toast({html: "Heroes will be displayed from both universes"});
+      }
+
+
+    useEffect(() => {
+        if(isLoad)  
+         dispatch(actions.clearDetailHero())
+        if(isUnLoad){
+            fetchData()
+            dispatch(actions.loadComplete())
         }
-    }
-    onInputChange = (e) => {
-        this.setState({
-            nameToSearch: e.target.value
-        });
+    })
+
+    let dashboard;
+
+    if(heroes.length){
+        dashboard = <Dashboard heroes = { heroes }/>
+    }else{
+        dashboard = <EmptyHeroes/>
     }
 
-    render(){
-    return (
-       <div>
+    return(
+        <div>
             <div>
                 <h1> Tours of heroes</h1>
             </div>
-            <p> </p>
             <div>
-              <Link to ={
-                  { 
-                   pathname: "/heroes",
-                   state: {universe: this.state.universe} 
-                  }
-                  }><button className="waves-effect waves-light btn" >Heroes</button></Link>
-              <div >
-                <label>
-                        <input 
-                            className="with-gap" 
-                            name="group1" type="radio" 
-                            value="Marvel" 
-                            checked={this.state.universe === "Marvel"}
-                            onChange={this.onRadioChange}
-                        />
-                        <span>Marvel</span>
-                </label>
-                <label>
-                        <input 
-                            className="with-gap"
-                            name="group1" 
-                            type="radio"
-                            value="DC"
-                            checked={this.state.universe === "DC"}
-                            onChange={this.onRadioChange}
-                        />
-                        <span>DC</span>
-                </label>
-                <label>
-                        <input
-                            className="with-gap"
-                            name="group1"
-                            type="radio"
-                            value="" 
-                            checked={this.state.universe === ""}
-                            onChange={this.onRadioChange}
-                        />
-                        <span>Both</span>
-                </label>
-              </div>
-              <div className="board">
-              <h2>Last heroes</h2>
-              <ul>
-                    {this.state.lastHeroes.map((hero)=>{
-                        return  <div className="dashboard" key={hero.id}>
-                                    <Link  to={"/detailHero/"+hero.name} >
-                                        <button className="waves-effect teal lighten-1 btn dashboard_btn">
-                                            {hero.name}
-                                        </button>
-                                    </Link>
-                                </div>
-                    })}
-              </ul>
-              </div>
+                <Link to ={
+                    { 
+                    pathname: "/heroes",
+                    }
+                }
+                >
+                    <Button  className="waves-effect waves-light btn" text="Heroes"> </Button>
+                </Link>
+                
+                <div >
+                    <RadioButton 
+                        className ="with-gap"
+                        value="Marvel"
+                        checked = {universe === "Marvel"}
+                        text = "Marvel"
+                        dispatch = { () => dispatch(actions.setMarvel())}
+                    />
+                    <RadioButton 
+                        className ="with-gap"
+                        value="DC"
+                        checked = {universe === "DC"}
+                        text = "DC"
+                        dispatch = { () => dispatch(actions.setDC())}
+                    />
+                    <RadioButton 
+                        className ="with-gap"
+                        value=""
+                        checked = {universe === ""}
+                        text = "Both"
+                        dispatch = { () => dispatch(actions.setBoth())}
+                    />
+                </div>
+            
             </div>
-     
-       </div>
-    );
-    }
+            {dashboard}
+        </div>
+    )
 }
+
