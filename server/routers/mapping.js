@@ -9,7 +9,7 @@ router.get('/getHeroes', async (req,res)=>{
             res.send(err);
         }else{
             console.log(typeof data + ': ' + data);
-            res.json(data);
+            res.send(data);
         }
     })    
 })
@@ -31,6 +31,13 @@ router.post('/addHero', async(req,res)=>{
         })
       
     });
+})
+
+
+router.get('/getTotalCount', async (req,res) => {
+    Hero.countDocuments({}, function(err,c){
+        res.send({count: c});
+    })
 })
 
 // localhost:3000/getHero/:name
@@ -71,10 +78,10 @@ router.put('/updateHero/:oldName', async (req,res) => {
     var newHero = { $set: { name: name, universe: universe}}
     Hero.updateOne(mQuery,newHero,function(err,result){
         if(err){
-            res.send(err);
+            res.send({msg: "hero didn't updated :("});
         }else{
             console.log(name+" was updated");
-            res.status(200).send({ message: "hero was updated!" });
+            res.send({ msg: "hero was updated!" });
         }
     })
 })
