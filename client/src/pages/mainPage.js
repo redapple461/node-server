@@ -8,6 +8,7 @@ import {  RadioButton } from '../components/radio'
 import { Dashboard } from '../components/dashboard'
 import { EmptyHeroes } from '../components/emptyHeroes'
 
+
 export const MainPage = () => {
     const universe =  useSelector(state => state.searchUniverse);
     const heroes = useSelector(state => state.heroes.slice(state.heroes.length-4,state.heroes.length).reverse());
