@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HeroList/> test should render with given state from Redux store 1`] = `
+<div>
+  <h1>
+     Heroes List
+  </h1>
+  <a
+    href="/main"
+    onClick={[Function]}
+  >
+     
+    <button
+      className="waves-effect waves-light btn"
+    >
+       
+      Dashboard
+       
+    </button>
+  </a>
+  <ul>
+    <div>
+      <a
+        href="/detailHero/Mock_1"
+        onClick={[Function]}
+      >
+        <button
+          className="waves-effect orange darken-1 btn list_btn"
+        >
+           
+          0: Mock_1
+           
+        </button>
+      </a>
+      <button
+        className="waves-effect red btn"
+        onClick={[Function]}
+      >
+         
+        x
+         
+      </button>
+    </div>
+  </ul>
+  <div>
+    Add new hero
+    <input
+      onChange={[Function]}
+      type="text"
+    />
+    <button
+      className="waves-effect waves-light btn"
+      onClick={[Function]}
+    >
+       
+      Add hero
+       
+    </button>
+    <label>
+      <input
+        className="with-gap"
+        name="group1"
+        onChange={[Function]}
+        type="radio"
+        value="Marvel"
+      />
+      <span>
+        Marvel
+      </span>
+    </label>
+    <label>
+      <input
+        className="with-gap"
+        name="group1"
+        onChange={[Function]}
+        type="radio"
+        value="DC"
+      />
+      <span>
+        DC
+      </span>
+    </label>
+  </div>
+  <button
+    className="waves-effect waves-light btn"
+    onClick={[Function]}
+  >
+     
+    Go back
+     
+  </button>
+</div>
+`;

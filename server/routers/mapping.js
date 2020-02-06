@@ -18,7 +18,7 @@ router.get('/getHeroes', async (req,res)=>{
 
 // localhost:3000/addHero
 router.post('/addHero', async(req,res)=>{
-    if(!req.body) res.sendStatus(400);
+    // if(!req.body) res.sendStatus(400);
     console.log('hero to post: ' + req.body.name + ', '+req.body.universe);
     Hero.countDocuments({},function(err,c){
         console.log("Count is : "+c);

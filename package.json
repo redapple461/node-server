@@ -7,9 +7,13 @@
     "concurrently": "^5.0.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^5.8.9"
+    "mongoose": "^5.8.9",
+    "superagent": "^5.2.1",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "concurrently": "^5.0.2"
   },
   "scripts": {
