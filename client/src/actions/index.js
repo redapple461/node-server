@@ -99,8 +99,10 @@ export const isLoad = () => {
     }
 }
 
-export const detailBack = () => {
-    return{
-        type: "DETAIL_BACK"
+/*
+    export const detailBack = () => {
+        return{
+            type: "DETAIL_BACK"
+        }
     }
-}
+*/

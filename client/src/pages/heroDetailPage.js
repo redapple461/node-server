@@ -6,21 +6,20 @@ import { NoPage } from '../components/404'
 import {  Details } from '../components/detailPage'
 import { RadioButton } from '../components/radio'
 import { Button } from '../components/button'
-
+import { getByName } from '../http/httpHook'
 
 
 export const HeroDetailPage = (props) => {
-   
+    
     const detailHero = useSelector(state => state.detailHero)
     const dispatch = useDispatch();
     const isLoad = useSelector(state => state.isLoad)
     async function fetchData() {
         try{
-            await fetch('http://localhost:4000/getHero/'+props.match.params.name)
-            .then(res => res.json())
+            
+            await getByName(props.match.params.name)
             .then(res => dispatch(actions.initDetailHero(res[0])));
         }catch(e){
-            
         }
       }
     const goBack = () => {
@@ -31,7 +30,7 @@ export const HeroDetailPage = (props) => {
     }  
 
     useEffect(()=>{
-            if(!isLoad){
+            if(isLoad === false){
                 fetchData()
                 dispatch(actions.isLoad())
             }

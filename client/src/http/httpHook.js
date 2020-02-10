@@ -1,25 +1,39 @@
-import {useState,useCallback} from 'react'
 
-export const useHttp = () => {
-    const [loading, setLoading] = useState(false)
 
-    const request = useCallback(async (url, method = 'GET' , body = null) => {
-        setLoading(true)
-        try{
-           console.log(body); 
-           const responce = await fetch(url,{method , body ,headers: {
-            'Content-Type': 'application/json'
-          }})
-           const data = await responce.json()
-           if(!responce.ok){
-               throw new Error('Something happened')
-           }
-           setLoading(false)
-           return data
-        }catch(e){
-            setLoading(false)
-        }
-    },[])
 
-    return { loading , request}
+export const getHeroes = () => {
+    return fetch("http://localhost:4000/getHeroes")
+        .then(res => res.json());
+}
+
+
+export const addHero = (data) => {
+    return fetch("http://localhost:4000/addHero", {
+                method: 'POST', 
+                body: JSON.stringify(data),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+            }).then(res => res.json());
+}
+
+export const getByName = (name) => {
+    return fetch('http://localhost:4000/getHero/'+name)
+        .then(res => res.json());
+}
+
+export const deleteByName = (name) => {
+    return fetch("http://localhost:4000/deleteHero/"+name,{
+        method: 'DELETE'
+   });
+}
+
+export const updateHero = (oldName, body) => {
+    return fetch('http://localhost:4000/updateHero/'+oldName,{
+                method: 'PUT',
+                body: JSON.stringify(body),
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => res.json())
 }

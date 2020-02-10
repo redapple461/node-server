@@ -4,7 +4,7 @@ exports[`<HeroList/> test should render with given state from Redux store 1`] = 
 <div>
   <div>
     <h1>
-      Mock
+      Ironman
        details
     </h1>
     <strong>
@@ -15,7 +15,7 @@ exports[`<HeroList/> test should render with given state from Redux store 1`] = 
     <br />
     <strong>
        Name: 
-      Mock
+      Ironman
        
     </strong>
     <br />
@@ -33,7 +33,7 @@ exports[`<HeroList/> test should render with given state from Redux store 1`] = 
     </p>
     <input
       onChange={[Function]}
-      placeholder="Mock"
+      placeholder="Ironman"
       type="text"
     />
     <div>

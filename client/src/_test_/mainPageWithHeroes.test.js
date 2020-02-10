@@ -1,7 +1,7 @@
 import React from 'react';
 import {MainPage} from '../pages/MainPage'
 import { mount,shallow } from 'enzyme';
-import renderer from 'react-test-renderer'
+import renderer, { act } from 'react-test-renderer'
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { Switch,Route } from 'react-router-dom';
@@ -24,8 +24,8 @@ describe('<MainPage/> test ', () => {
             oldName: "",
             addHero: {name: "", universe: ""},
             detailHero: null,
-            isLoad: false,
-            noHeroes: true
+            isLoad: true,
+            noHeroes: false
         });
     
         store.dispatch = jest.fn();
@@ -34,28 +34,18 @@ describe('<MainPage/> test ', () => {
             <Provider store={store}>
               <Router>
                 <Route>
-                    <MainPage/>
+                    <MainPage />
                 </Route>
               </Router>
             </Provider>    
         );
-    })
+    });
+
+  
 
     it('should render with given state from Redux store', done => {
         expect(container.toJSON()).toMatchSnapshot();
         done();
     });
-
-    it('should contain hero dashboard', done => {
-        console.log(container.toJSON());
-        done();
-    })
-
-    
-
-
-
-
-
    
 });

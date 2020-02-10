@@ -9,6 +9,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import * as actions from '../actions'
 import "babel-polyfill"
 import 'jest-fetch-mock'
+import { deleteByName } from '../http/httpHook'
 
 describe('<HeroList/> test', () => {
     let store;
@@ -26,7 +27,7 @@ describe('<HeroList/> test', () => {
             addHero: {name: "Mock_ADD", universe: "Mock_AU"},
             detailHero: null,
             isLoad: false,
-            noHeroes: true
+            noHeroes: false
         });
         //fetch = jest.fn(() => {body: 'ok'});
         store.dispatch = jest.fn();
@@ -42,7 +43,7 @@ describe('<HeroList/> test', () => {
     })
 
     it('should render with given state from Redux store', done => {
-        console.log(container.toJSON().children[3].children[2].props)
+        // console.log(container.toJSON().children[3].children[2].props)
         expect(container.toJSON()).toMatchSnapshot();
         done();
     });
@@ -51,10 +52,19 @@ describe('<HeroList/> test', () => {
         renderer.act( () => {
             container.toJSON().children[3].children[2].props.onClick()
         });
-        expect(store.dispatch).toHaveBeenCalledTimes(1);
-        expect(store.dispatch).toHaveBeenCalledWith(
-            {type:'HEROES_LOADED'}
-        )
+        expect(store.dispatch).toHaveBeenCalledTimes(0);
+       // expect(store.dispatch).toHaveBeenCalledWith(
+       //     {type:'HEROES_LOADED'}
+       // )
+        done();
+    })
+    
+    it('should exist after click on delete btn', done => {
+        const btn = container.toJSON().children[2].children[0].children[1];
+        renderer.act(() => {
+            btn.props.onClick()
+        });
+        expect(btn.children[1].trim()).toBe('x');
         done();
     })
 

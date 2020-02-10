@@ -22,7 +22,7 @@ describe('<HeroList/> test', () => {
             oldName: "",
             addHero: {name: "", universe: ""},
             detailHero: null,
-            isLoad: false,
+            isLoad: true,
             noHeroes: true
         });
         //fetch = jest.fn(() => {body: 'ok'});
@@ -31,7 +31,7 @@ describe('<HeroList/> test', () => {
             <Provider store={store}>
               <Router>
                 <Route>
-                    <HeroList/>
+                    <HeroList history ={ {goBack : jest.fn()}}/>
                 </Route>
               </Router>
             </Provider>    
@@ -53,7 +53,7 @@ describe('<HeroList/> test', () => {
         done();
     });
 
-    it('should contain heroes without fetch', done => {
+    it('should contain no heroes without fetch', done => {
         expect(container.toJSON().children[2].children[0].children[0].trim()).toBe('No heroes :(');
         done();
     });
@@ -64,8 +64,53 @@ describe('<HeroList/> test', () => {
         done();
     });
 
-    it('should call dispatch once at start', done => {
-        expect(store.dispatch).toHaveBeenCalledTimes(0);
+
+    it('should dispatch after input ', done => {
+        renderer.act( () => {
+            container.toJSON().children[3].children[1].props.onChange({target: {value: 'test'}})
+        });
+        expect(store.dispatch).toHaveBeenCalledTimes(3);
+        expect(store.dispatch).toHaveBeenCalledWith(
+            actions.updateAddHeroName('test')
+        )
         done();
     });
+
+    it('should dispatch after radio btn (marvel) ', done => {
+        renderer.act( () => {
+            container.toJSON().children[3].children[3].children[0].props.onChange()
+        });
+        expect(store.dispatch).toHaveBeenCalledWith(
+            actions.updateAddHeroUniverse('Marvel')
+        )
+        done();
+    });
+
+    it('should dispatch after radio btn (dc) ', done => {
+        renderer.act( () => {
+            container.toJSON().children[3].children[4].children[0].props.onChange()
+        });
+        expect(store.dispatch).toHaveBeenCalledWith(
+            actions.updateAddHeroUniverse('DC')
+        )
+        done();
+    });
+
+    it('should work at click btn', done => {
+        renderer.act(() => {
+            container.toJSON().children[4].props.onClick();
+        });
+        expect(jest.fn()).toHaveBeenCalledTimes(0);
+        done();
+    });
+
+
+ 
+    
+
+   
+
+
+
+    
 })

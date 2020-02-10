@@ -55,29 +55,54 @@ describe('<MainPage/> test ', () => {
         done();
     });
 
+    it('should call to API on start', done => {
+        expect(store.dispatch).toHaveBeenCalledTimes(2);
+        expect(store.dispatch).toHaveBeenCalledWith(
+            actions.getData({ID:1})
+        );
+        
+        done();
+    });
     
     it('should contain 3 radio buttons', done => {
         expect(container.toJSON().children[1].children[1].children.length).toBe(3);
         done();
     });
 
-    it('should call dispatch once at start', done => {
-        expect(store.dispatch).toHaveBeenCalledTimes(1);
-        done();
-    });
 
     it('should call dispatch after change radio btn', done => {
         renderer.act( () => {
             container.toJSON().children[1].children[1].children[0].children[0].props.onChange()
         });
-        expect(store.dispatch).toHaveBeenCalledTimes(3);
+    
+        expect(store.dispatch).toHaveBeenCalledTimes(4);
         expect(store.dispatch).toHaveBeenCalledWith(
             actions.setMarvel({type: 'SET_MARVEL'})
         );
         done();
     });
 
+    it('should call dispatch after change radio btn', done => {
+        renderer.act( () => {
+            container.toJSON().children[1].children[1].children[1].children[0].props.onChange();
+        });
+        expect(store.dispatch).toHaveBeenCalledTimes(4);
+        expect(store.dispatch).toHaveBeenCalledWith(
+            actions.setDC({type: 'SET_DC'})
+        );
+        done();
+    });
 
+    it('should call dispatch after change radio btn', done => {
+        renderer.act( () => {
+            container.toJSON().children[1].children[1].children[2].children[0].props.onChange()
+        });
+        expect(store.dispatch).toHaveBeenCalledTimes(4);
+        expect(store.dispatch).toHaveBeenCalledWith(
+            actions.setBoth({type: 'SET_BOTH'})
+        );
+        done();
+    });
 
 
 

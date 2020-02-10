@@ -24,7 +24,7 @@ describe('<HeroList/> test', () => {
             heroes: [],
             oldName: "",
             addHero: {name: "", universe: ""},
-            detailHero: {id:0,name:'Mock',universe:'Mock_U'},
+            detailHero: {id:0,name:'Ironman',universe:'Mock_U'},
             isLoad: false,
             noHeroes: true
         });
@@ -34,7 +34,7 @@ describe('<HeroList/> test', () => {
             <Provider store={store}>
               <Router>
                 <Route>
-                    <HeroDetailPage/>
+                    <HeroDetailPage history ={ {goBack : jest.fn()}} match={{params: 'no_hero'}} />
                 </Route>
               </Router>
             </Provider>    
@@ -48,7 +48,6 @@ describe('<HeroList/> test', () => {
     
 
     it('should render with given state from Redux store', done => {
-        console.log(container.toJSON());
         expect(container.toJSON()).toMatchSnapshot();
         done();
     });
@@ -71,12 +70,43 @@ describe('<HeroList/> test', () => {
         done();
     });
 
+    it('should call dispatch on radio btn change (Marvel)', done => {
+        renderer.act(() => {
+            container.toJSON().children[1].children[2].children[0].children[0].props.onChange()
+        })
+        expect(store.dispatch).toHaveBeenCalledTimes(2);
+        expect(store.dispatch).toHaveBeenCalledWith(
+            actions.updateUniverse("Marvel")
+        );
+        done();
+    });
+
+    it('should call dispatch on radio btn change (DC)', done => {
+        renderer.act(() => {
+            container.toJSON().children[1].children[2].children[1].children[0].props.onChange()
+        })
+        expect(store.dispatch).toHaveBeenCalledTimes(2);
+        expect(store.dispatch).toHaveBeenCalledWith(
+            actions.updateUniverse("DC")
+        );
+        done();
+    });
+
 
     it('should call dispatch on save btn click', done => {
         renderer.act( () => {
             container.toJSON().children[3].props.onClick()
         });
         expect(store.dispatch).toHaveBeenCalledTimes(2);
+        done();
+    });
+
+    it('should call goBack fnc on back btn click', done => {
+        // container.goBack = jest.fn();
+        renderer.act( () => {
+            container.toJSON().children[2].props.onClick()
+        });
+        expect(jest.fn()).toHaveBeenCalledTimes(0);
         done();
     });
 

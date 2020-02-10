@@ -7,6 +7,7 @@ import { Button } from "../components/button"
 import { RadioButton } from "../components/radio"
 import { HeroesList } from '../components/hList'
 import { EmptyHeroes } from '../components/emptyHeroes'
+import { getHeroes, addHero } from '../http/httpHook'
 
 const HeroList = (props ) => {
     const heroes = useSelector(state => state.heroes)
@@ -15,16 +16,18 @@ const HeroList = (props ) => {
     const heroToAdd = useSelector(state => state.addHero)
     const isLoad = useSelector(state => state.isLoad)
     const dispatch = useDispatch()
-
     async function fetchData() {
-        await  fetch("http://localhost:4000/getHeroes")
-        .then(res => res.json())
-        .then(heroes => {
-            dispatch(actions.getData(heroes));
-        });
+        try{
+            await getHeroes().then(heroes => {
+                dispatch(actions.getData(heroes));
+            });
+        }catch(e){
+            
+        }
       }
 
     useEffect(() => {
+        
         if(isLoad)  
         dispatch(actions.clearDetailHero())
         if(isUnLoad){
@@ -40,20 +43,13 @@ const HeroList = (props ) => {
         heroList = <EmptyHeroes/>
     }
 
-    const addHero = async () => {
+    const add = async () => {
         const data = {
             name: heroToAdd.name,
             universe: heroToAdd.universe 
         };
-        try{
-            fetch("http://localhost:4000/addHero", {
-                method: 'POST', 
-                body: JSON.stringify(data),
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-            }).then(res => res.json())
-              .then(res => dispatch(actions.addHero(res)))
+        try{     
+            addHero(data).then(res => dispatch(actions.addHero(res)))
             window.M.toast({html: "Hero "+heroToAdd.name+" was added"})
         }catch(e){
             window.M.toast(e);
@@ -69,7 +65,7 @@ const HeroList = (props ) => {
             <div>
                 Add new hero
                 <input type="text" onChange={(e)=> dispatch(actions.updateAddHeroName(e.target.value))}></input>
-                <Button className="waves-effect waves-light btn" onClick={addHero} text="Add hero"/>
+                <Button className="waves-effect waves-light btn" onClick={add} text="Add hero"/>
                 <RadioButton  className="with-gap" value="Marvel" text="Marvel"  dispatch={()=> dispatch(actions.updateAddHeroUniverse("Marvel"))}/>
                 <RadioButton  className="with-gap" value="DC" text="DC"   dispatch={()=> dispatch(actions.updateAddHeroUniverse("DC"))}/>
             </div>

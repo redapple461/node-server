@@ -1,3 +1,4 @@
+import { updateHero } from "../http/httpHook";
 
 
 const init = {
@@ -87,19 +88,13 @@ const reducer = (state = init,action) => {
                 detailHero: {...state.detailHero, universe: action.newUniverse}
             }    
         case "UPDATE_HERO":
-            fetch('http://localhost:4000/updateHero/'+state.oldName,{
-                method: 'PUT',
-                body: JSON.stringify(state.detailHero),
-                headers:{
-                    'Content-Type': 'application/json'
-                }
-            })
+            updateHero(state.oldName,state.detailHero);
             return{
                 ...state,
                 heroes:  state.heroes.map(hero => hero.id === state.detailHero.id ? 
                                                 {...hero, name: state.detailHero.name,universe: state.detailHero.universe} :
                                                 hero
-                                        )
+                                         )
             }
         case "CLEAR_DETAIL_HERO":
             return{

@@ -2,6 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import { Button } from './button'
 import * as actions from '../actions'
+import { deleteByName } from '../http/httpHook'
 
 export const HeroesList = (props) => {
     return(
@@ -18,9 +19,7 @@ export const HeroesList = (props) => {
                                 text = "x"
                                 className="waves-effect red btn" 
                                 onClick = {() => 
-                                    fetch("http://localhost:4000/deleteHero/"+hero.name,{
-                                          method: 'DELETE'
-                                     }).then(res => {props.dispatch(actions.deleteHero(hero.id)); window.M.toast({html: "Hero "+hero.name+" was delete"})})}
+                                    deleteByName(hero.name).then(res => {props.dispatch(actions.deleteHero(hero.id)); window.M.toast({html: "Hero "+hero.name+" was delete"})})}
                             />
                               
                         </div>

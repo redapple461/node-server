@@ -9,6 +9,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import * as actions from '../actions'
 import "babel-polyfill"
 import jest from 'jest-mock';
+import { Dropdown } from 'materialize-css';
 
 
 describe('<HeroList/> test', () => {
@@ -25,7 +26,7 @@ describe('<HeroList/> test', () => {
             oldName: "",
             addHero: {name: "", universe: ""},
             detailHero: null,
-            isLoad: false,
+            isLoad: true,
             noHeroes: true
         });
         store.dispatch = jest.fn();
@@ -46,9 +47,15 @@ describe('<HeroList/> test', () => {
     
 
     it('should render with given state from Redux store', done => {
+        
         expect(container.toJSON()).toMatchSnapshot();
         done();
     });
+
+    it('shouldnt dispatch at start', done => {
+        expect(store.dispatch).toHaveBeenCalledTimes(0);
+        done();
+    })
 
 
 })

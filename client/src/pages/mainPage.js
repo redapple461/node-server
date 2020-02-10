@@ -7,7 +7,7 @@ import {  Button } from '../components/button'
 import {  RadioButton } from '../components/radio'
 import { Dashboard } from '../components/dashboard'
 import { EmptyHeroes } from '../components/emptyHeroes'
-
+import { getHeroes } from '../http/httpHook'
 
 export const MainPage = () => {
     const universe =  useSelector(state => state.searchUniverse);
@@ -18,11 +18,10 @@ export const MainPage = () => {
 
 
     async function fetchData() {
-        await  fetch("http://localhost:4000/getHeroes")
-        .then(res => res.json())
-        .then(heroes => {
-            dispatch(actions.getData(heroes));
-        });
+        return  getHeroes()
+        .then(heroes => 
+                 dispatch(actions.getData(heroes))
+             );
       }
 
 
