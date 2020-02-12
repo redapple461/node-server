@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "server-ts",
   "version": "1.0.0",
   "description": "react-app",
   "main": "./server/server.js",
@@ -19,7 +19,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./server/server.js",
-    "server": "npm start",
+    "server": "cd server && npm start",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },

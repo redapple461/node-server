@@ -18,7 +18,7 @@ export const HeroDetailPage = (props) => {
         try{
             
             await getByName(props.match.params.name)
-            .then(res => dispatch(actions.initDetailHero(res[0])));
+            .then(res => dispatch(actions.initDetailHero(res)));
         }catch(e){
         }
       }
