@@ -1,68 +1,86 @@
+import * as express from 'express'
 import { Router } from 'express'
 import Hero from '../models/schema'
+import { Schema } from 'mongoose';
+import { HeroModel } from '../models/hero.model';
 
 
-const router = Router()
+class HeroController {
+    public router: Router = Router()
+    private model: Schema = Hero;
 
-router.get('/getHeroes', async (req: any, res: any) => {
-    Hero.find({}, (err: Error, data: object) => {
-        res.send(data)
-    })
-})
+    constructor() {
+        this.initRoutes();
+    }
 
-router.post('/addHero', async (req: any, res: any) => {
-    if(req.body.name === undefined ) return res.status(400).send({error: 'name is undefined'})
-    console.log('hero to post: ' + req.body.name + ', '+req.body.universe);
-    Hero.countDocuments({},(err: Error,c: number) => {
-        console.log("Count is : "+c);
-        const hero = {id: c+1, name: req.body.name, universe: req.body.universe === undefined ?  "" : req.body.universe}
-        // check if hero already exists response with message
-        Hero.exists({name: hero.name}, (searchErr: any, searchRes: any) => {
-            // if(searchErr) console.log(err)
-            if(!searchRes){
-                Hero.create(hero,(_err: Error,_res: any) =>{
-                    return res.status(200).send(hero)
-                })
-            }else{
-                res.send({message: `Hero with name ${hero.name} already exists`})
-            }
+    public initRoutes(){
+        this.router.get('/getHeroes',this.getAllHeroes);
+        this.router.post('/addHero',this.addHero);
+        this.router.get('/getHero/:name',this.getHero);
+        this.router.delete('/deleteHero/:name',this.deleteHero);
+        this.router.put('/updateHero/:oldName',this.updateHero);
+    }
+
+    private getAllHeroes = (req: express.Request,res: express.Response) => {
+            return this.model.find({}, (err: Error, data: object) => {
+                res.send(data)
+            })
+        }
+
+    private addHero = (req: express.Request, res: express.Response) => {
+        if(req.body.name === undefined )
+             return res.status(400).send({error: 'name is undefined'})
+        const hero: HeroModel = req.body;
+        if(hero.universe === undefined )
+             hero.universe = "";
+        console.log('hero to post: ' + hero);
+        this.model.countDocuments({},(err: Error,c: number) => {
+            console.log("Count is : "+c);
+            hero.id = c + 1;
+            // check if hero already exists response with message
+            this.model.exists({name: hero.name}, (searchErr: any, searchRes: any) => {
+                // if(searchErr) console.log(err)
+                if(!searchRes){
+                    this.model.create(hero,(_err: Error,_res: any) =>{
+                        return res.status(200).send(hero)
+                    })
+                }else{
+                    res.send({message: `Hero with name ${hero.name} already exists`})
+                }
+            })
         })
-    })
-})
+    }
 
-router.get('/getHero/:name', async (req,res) => {
-    const searchName = req.params.name;
-    console.log(`Get hero ${searchName}`)
-    Hero.findOne({name: searchName},(err: any,data: object) => {
-        // if(err) res.send(err)
-        res.send(data)
-    })
-})
+    private getHero = (req: express.Request, res: express.Response) => {
+        const searchName: string  = req.params.name;
+        console.log(`Get hero ${searchName}`)
+        this.model.findOne({name: searchName},(err: any,data: HeroModel) => {
+            // if(err) res.send(err)
+            res.send(data)
+        })
+    }
 
+    private updateHero = (req: express.Request, res: express.Response) => {
+        if(req.body.name === undefined) 
+            return res.status(400).send({error: "Name is undefined"})
+        const oldName: string = req.params.oldName
+        const hero: HeroModel = req.body;
+        console.log(`Old name ${oldName} will update with values ${hero.name}: ${hero.universe}`)
+        const query = { $set: hero}
+        this.model.updateOne({name: oldName},query, (err: any) => {
+            // if(err) return res.send(err)
+            res.send({message: `Hero ${oldName} was update - ${hero.name}: ${hero.universe}`})
+        })
+    }
 
-router.delete('/deleteHero/:name', async (req,res) => {
-    const deleteName = req.params.name
-    console.log(`Hero to delete ${deleteName}`)
-    Hero.deleteOne({name: deleteName}, (err: any) => {
-        // if(err) res.send(err)
-        res.send({message: `Hero ${deleteName} was deleted`})
-    })
-})
+    private deleteHero = (req: express.Request, res: express.Response) => {
+        const deleteName: string = req.params.name
+        console.log(`Hero to delete ${deleteName}`)
+        this.model.deleteOne({name: deleteName}, (err: any) => {
+            // if(err) res.send(err)
+            res.send({message: `Hero ${deleteName} was deleted`})
+        })
+    }
+}
 
-router.put('/updateHero/:oldName', async (req,res) => {
-    if(req.body.name === undefined) return res.status(400).send({error: "Name is undefined"})
-    const oldName = req.params.oldName
-    const name = req.body.name
-    const universe = req.body.universe
-    console.log(`Old name ${oldName} will update with values ${name}: ${universe}`)
-    const query = { $set: {name,universe}}
-    Hero.updateOne({name: oldName},query, (err: any) => {
-        // if(err) return res.send(err)
-        res.send({message: `Hero ${oldName} was update - ${name}: ${universe}`})
-    })
-})
-
-
-
-
-export default router
+export default HeroController
