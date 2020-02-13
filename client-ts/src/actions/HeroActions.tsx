@@ -1,0 +1,15 @@
+export const SET_MARVEL = 'SET_MARVEL';
+export const SET_DC = 'SET_DC';
+export const SET_BOTH = 'SET_BOTH';
+export const GET_DATA = 'GET_DATA';
+export const HEROES_LOADED = 'HEROES_LOADED';
+export const ADD_HERO = 'ADD_HERO';
+export const DELETE_HERO = 'DELETE_HERO';
+export const INIT_HERO = 'INIT_HERO';
+export const UPDATE_NAME = 'UPDATE_NAME';
+export const UPDATE_ADD_HERO_NAME = 'UPDATE_ADD_HERO_NAME';
+export const UPDATE_ADD_HERO_UNIVERSE = 'UPDATE_ADD_HERO_UNIVERSE';
+export const CLEAR_DETAIL_HERO = 'CLEAR_DETAIL_HERO';
+export const DETAIL_LOADED = 'DETAIL_LOADED';
+export const UPDATE_HERO = 'UPDATE_HERO'
+export const UPDATE_UNIVERSE = 'UPDATE_UNIVERSE'

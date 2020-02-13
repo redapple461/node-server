@@ -4,12 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const config_1 = __importDefault(require("config"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 class App {
-    constructor(port, controllers) {
+    constructor(controllers) {
         this.app = express_1.default();
-        this.port = port;
+        this.port = config_1.default.get('port');
         this.initMidleware();
         this.initControllers(controllers);
     }
@@ -22,6 +23,9 @@ class App {
     }
     initControllers(controllers) {
         this.app.use('', controllers.router);
+    }
+    getServer() {
+        return this.app;
     }
     listen() {
         this.app.listen(this.port, () => {

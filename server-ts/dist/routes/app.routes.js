@@ -18,6 +18,8 @@ class HeroController {
             if (req.body.name === undefined)
                 return res.status(400).send({ error: 'name is undefined' });
             const hero = req.body;
+            if (hero.universe === undefined)
+                hero.universe = "";
             console.log('hero to post: ' + hero);
             this.model.countDocuments({}, (err, c) => {
                 console.log("Count is : " + c);
