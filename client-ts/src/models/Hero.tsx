@@ -1,5 +1,5 @@
-export interface Hero{
-    id?: number;
-    name: string;
-    universe: string;
+export interface Hero {
+	id?: number;
+	name: string;
+	universe: string;
 }

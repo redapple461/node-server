@@ -1,5 +1,5 @@
-import {Hero} from '../../models/Hero'
+import {Hero} from '../../models/Hero';
 
 export interface DashboardProps {
-    heroes: Hero[];
+	heroes: Hero[];
 }

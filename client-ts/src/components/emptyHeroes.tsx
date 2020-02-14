@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-export const EmptyHeroes: React.SFC = (props) => {
-    return(
-        <div>
-            <h1 className="error"> No heroes :( </h1>
-        </div>
-    )
+export const EmptyHeroes = () => {
+	return(
+		<div>
+			<h1 className='error'> No heroes :( </h1>
+		</div>
+	)
 }

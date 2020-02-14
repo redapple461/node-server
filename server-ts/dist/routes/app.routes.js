@@ -1,13 +1,20 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
+const express = __importStar(require("express"));
 const schema_1 = __importDefault(require("../models/schema"));
 class HeroController {
     constructor() {
-        this.router = express_1.Router();
+        this.router = express.Router();
         this.model = schema_1.default;
         this.getAllHeroes = (req, res) => {
             return this.model.find({}, (err, data) => {
@@ -15,14 +22,16 @@ class HeroController {
             });
         };
         this.addHero = (req, res) => {
-            if (req.body.name === undefined)
+            if (req.body.name === undefined) {
                 return res.status(400).send({ error: 'name is undefined' });
+            }
             const hero = req.body;
-            if (hero.universe === undefined)
-                hero.universe = "";
+            if (hero.universe === undefined) {
+                hero.universe = '';
+            }
             console.log('hero to post: ' + hero);
             this.model.countDocuments({}, (err, c) => {
-                console.log("Count is : " + c);
+                console.log('Count is : ' + c);
                 hero.id = c + 1;
                 // check if hero already exists response with message
                 this.model.exists({ name: hero.name }, (searchErr, searchRes) => {
@@ -47,8 +56,9 @@ class HeroController {
             });
         };
         this.updateHero = (req, res) => {
-            if (req.body.name === undefined)
-                return res.status(400).send({ error: "Name is undefined" });
+            if (req.body.name === undefined) {
+                return res.status(400).send({ error: 'Name is undefined' });
+            }
             const oldName = req.params.oldName;
             const hero = req.body;
             console.log(`Old name ${oldName} will update with values ${hero.name}: ${hero.universe}`);

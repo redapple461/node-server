@@ -14,7 +14,7 @@ const hero = new Schema({
     universe: { type: String }
 });
 const db = mongoose_1.default.connect(connectUrl, (err, res) => {
-    console.log('Connect to ' + db, ' + ', res);
+    console.log('Connect to ' + db + res);
 });
 exports.default = mongoose_1.default.model('heroes', hero, 'heroes');
 //# sourceMappingURL=schema.js.map

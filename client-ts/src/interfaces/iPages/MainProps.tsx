@@ -1,3 +1,3 @@
-export interface MainProps{
-    name: string
+export interface MainProps {
+	name: string;
 }

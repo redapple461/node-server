@@ -1,4 +1,3 @@
 export interface NotFoundProps {
-    name: string;
-    
+	name: string;
 }

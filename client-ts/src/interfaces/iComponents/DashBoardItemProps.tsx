@@ -1,6 +1,6 @@
-import { Hero } from "../../models/Hero";
+import { Hero } from '../../models/Hero';
 
-export interface DashBoardItemProps{
-    hero: Hero;
-    className: string;
+export interface DashBoardItemProps {
+	hero: Hero;
+	className: string;
 }
