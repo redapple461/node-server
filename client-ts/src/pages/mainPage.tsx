@@ -19,9 +19,11 @@ export const MainPage = () => {
 
 	async function fetchData () {
 		return  getHeroes()
-		.then(res =>
-				dispatch(actions.getData(res))
-			);
+		.then(res => {
+				res.sort((a, b) => a.id - b.id);
+				dispatch(actions.getData(res));
+			}
+		);
 		}
 
 	useEffect(() => {
@@ -37,7 +39,7 @@ export const MainPage = () => {
 	const dashboard = heroes.length ? <Dashboard heroes={heroes}/> : <EmptyHeroes/>;
 
 	return(
-		<div>
+		<>
 			<div>
 				<h1> Tours of heroes</h1>
 			</div>
@@ -71,6 +73,6 @@ export const MainPage = () => {
 
 			</div>
 			{dashboard}
-		</div>
+		</>
 	);
 };

@@ -23,79 +23,99 @@ export function setBoth (): HeroActionsType{
 export function getData (data: Hero[]): HeroActionsType {
 	return{
 		type: actions.GET_DATA,
-		data: data
+		data
 	};
 }
 
-export function loadComplete(): HeroActionsType {
+export function loadComplete (): HeroActionsType {
 	return{
 		type: actions.HEROES_LOADED
 	};
 }
 
-export function addHero(hero: Hero): HeroActionsType {
+export function addHero (hero: Hero): HeroActionsType {
 	return{
 		type: actions.ADD_HERO,
-		hero: hero
+		hero
 	};
 }
 
-export function deleteHero(id: number): HeroActionsType{
+export function deleteHero (id: number): HeroActionsType{
 	return{
 		type: actions.DELETE_HERO,
-		id: id
+		id
 	};
 }
 
-export function initDetailHero(hero: Hero): HeroActionsType {
+export function initDetailHero (hero: Hero): HeroActionsType {
 	return{
 		type: actions.INIT_HERO,
-		hero: hero
+		hero
 	};
 }
 
-export function updateName(name: string): HeroActionsType {
+export function updateName (newName: string): HeroActionsType {
 	return{
 		type: actions.UPDATE_NAME,
-		newName: name
+		newName
 	};
 }
 
-export function updateUniverse(universe: string): HeroActionsType{
+export function updateUniverse (newUniverse: string): HeroActionsType{
 	return{
 		type: actions.UPDATE_UNIVERSE,
-		newUniverse: universe
+		newUniverse
 	};
 }
 
-export function updateHero(): HeroActionsType {
+export function updateHero (): HeroActionsType {
 	return{
 		type: actions.UPDATE_HERO
 	};
 }
 
-export function updateAddHeroName(name: string): HeroActionsType{
+export function updateAddHeroName (addName: string): HeroActionsType{
 	return{
 		type: actions.UPDATE_ADD_HERO_NAME,
-		addName: name,
+		addName
 	};
 }
 
-export function updateAddHeroUniverse(universe: string): HeroActionsType{
+export function updateAddHeroUniverse (addUniverse: string): HeroActionsType{
 	return{
 		type: actions.UPDATE_ADD_HERO_UNIVERSE,
-		addUniverse: universe
+		addUniverse
 	};
 }
 
-export function clearDetailHero(): HeroActionsType{
+export function clearDetailHero (): HeroActionsType{
 	return{
 		type: actions.CLEAR_DETAIL_HERO
 	};
 }
 
-export function isLoad(): HeroActionsType {
+export function isLoad (): HeroActionsType {
 	return{
 		type: actions.DETAIL_LOADED
+	};
+}
+
+export function addSkill (skillToAdd: string): HeroActionsType{
+	return{
+		type: actions.ADD_ASKILL,
+		skillToAdd
+	};
+}
+
+export function removeSkill (skillToRemove: string): HeroActionsType {
+	return{
+		type: actions.REMOVE_ASKILL,
+		skillToRemove
+	};
+}
+
+export function clearAddHero () {
+	return{
+		type: actions.CLEAR_ADD_HERO
 	};
 }

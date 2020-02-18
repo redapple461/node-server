@@ -8,7 +8,7 @@ const init: HeroStore = {
 	searchUniverse: '',
 	heroes: [],
 	oldName: '',
-	addHero: {name: '', universe: ''},
+	addHero: {name: '', universe: '', skills: []},
 	detailHero: null,
 	isLoad: false,
 	noHeroes: true
@@ -40,7 +40,7 @@ export default function reducer (state = init, action: HeroActionsType): HeroSto
 			return{
 				...state,
 				heroes: action.data
-			}
+			};
 		case actions.HEROES_LOADED:
 			return{
 				...state,
@@ -54,7 +54,7 @@ export default function reducer (state = init, action: HeroActionsType): HeroSto
 		case actions.UPDATE_ADD_HERO_NAME:
 			return{
 				...state,
-				addHero: {...state.addHero,name: action.addName}
+				addHero: {...state.addHero, name: action.addName}
 			};
 		case actions.UPDATE_ADD_HERO_UNIVERSE:
 			return{
@@ -94,9 +94,24 @@ export default function reducer (state = init, action: HeroActionsType): HeroSto
 		case actions.CLEAR_DETAIL_HERO:
 			return{
 				...state,
-				detailHero: {name: '', universe: ''},
+				detailHero: {name: '', universe: '', skills: []},
 				isLoad: false
 			};
+		case actions.ADD_ASKILL:
+			return{
+				...state,
+				addHero: {...state.addHero, skills: state.addHero.skills.concat(action.skillToAdd)}
+			};
+		case actions.REMOVE_ASKILL:
+			return{
+				...state,
+				addHero: {...state.addHero, skills: state.addHero.skills.filter(skill => skill !== action.skillToRemove)}
+		};
+		case actions.CLEAR_ADD_HERO:
+		return{
+			...state,
+			addHero: {name: '', universe: '', skills: []}
+		};
 		default:
 			return state;
 	}

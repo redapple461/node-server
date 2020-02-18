@@ -8,11 +8,11 @@ const config_1 = __importDefault(require("config"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 class App {
-    constructor(controllers) {
+    constructor(HeroController, SkillController) {
         this.app = express_1.default();
         this.port = config_1.default.get('port');
         this.initMidleware();
-        this.initControllers(controllers);
+        this.initControllers(HeroController, SkillController);
     }
     initMidleware() {
         this.app.use(cors_1.default());
@@ -21,8 +21,9 @@ class App {
         this.app.use(body_parser_1.default.urlencoded({ extended: true }));
         this.app.use(body_parser_1.default.json());
     }
-    initControllers(controllers) {
-        this.app.use('', controllers.router);
+    initControllers(HeroController, SkillController) {
+        this.app.use('', HeroController.router);
+        this.app.use('/skills', SkillController.router);
     }
     getServer() {
         return this.app;

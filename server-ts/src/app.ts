@@ -1,19 +1,19 @@
 import express from 'express';
 import config from 'config';
-import router from './routes/app.routes';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-
+import HeroController from './routes/app.routes';
+import SkillController from './routes/skill.routes';
 
 class App {
   private app: express.Application;
   private port: number;
 
-  constructor (controllers: router) {
+  constructor (HeroController: HeroController, SkillController: SkillController) {
     this.app = express();
     this.port = config.get('port');
     this.initMidleware();
-    this.initControllers(controllers);
+    this.initControllers(HeroController, SkillController);
   }
 
   private initMidleware () {
@@ -24,8 +24,9 @@ class App {
     this.app.use(bodyParser.json());
   }
 
-  private initControllers (controllers: router) {
-      this.app.use('', controllers.router);
+  private initControllers (HeroController: HeroController, SkillController: SkillController) {
+      this.app.use('', HeroController.router);
+      this.app.use('/skills', SkillController.router);
   }
 
   public getServer () {

@@ -14,7 +14,7 @@ export const HeroesList: React.SFC<HListProps> = (props) => {
 				return (
 						<div key={hero.id}>
 							<Link to={'/detailHero/' + hero.name}>
-							<Button className='waves-effect orange darken-1 btn list_btn' text={hero.id + ": " + hero.name}/>
+							<Button className='waves-effect orange darken-1 btn list_btn' text={hero.id + ': ' + hero.name}/>
 							</Link>
 							<Button
 								text='x'

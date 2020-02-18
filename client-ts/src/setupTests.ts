@@ -3,3 +3,8 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
+// require('jest-fetch-mock').enableMocks()
+
+
+global.fetch = require('jest-fetch-mock');
+fetch.mockResponse(JSON.stringify({ ID: 1 }))

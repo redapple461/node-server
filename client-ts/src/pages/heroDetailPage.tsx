@@ -40,9 +40,9 @@ export const HeroDetailPage = (props: any) => {
 	}
 	//               onChange={(e) => dispatch(actions.updateUniverse(e.target.value))}
 	return(
-		<div>
+		<>
 
-				<Details name={detailHero.name} id={detailHero.id} universe={detailHero.universe}/>
+				<Details name={detailHero.name} id={detailHero.id} universe={detailHero.universe} skills={detailHero.skills}/>
 				<div className='form'>
 					<p> Type new name of hero and choose his universe</p>
 					<input
@@ -80,6 +80,6 @@ export const HeroDetailPage = (props: any) => {
 					onClick={() => {dispatch(actions.updateHero()); }}
 					text='Save'
 				/>
-			</div>
+			</>
 	);
 };

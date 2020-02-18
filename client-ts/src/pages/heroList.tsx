@@ -17,9 +17,11 @@ const HeroList = (props: any) => {
 	const heroToAdd = useSelector((state: HeroStore) => state.addHero);
 	const isLoad = useSelector((state: HeroStore) => state.isLoad);
 	const dispatch = useDispatch();
+	let timeout = null;
 	async function fetchData () {
 		try {
 			await getHeroes().then(res => {
+				res.sort((a, b) => a.id - b.id);
 				dispatch(actions.getData(res));
 			});
 		} catch (e) {
@@ -29,7 +31,7 @@ const HeroList = (props: any) => {
 		}
 
 	useEffect(() => {
-		if (isLoad){
+		if (isLoad) {
 			dispatch(actions.clearDetailHero());
 		}
 		if (isUnLoad) {
@@ -41,33 +43,69 @@ const HeroList = (props: any) => {
 	const heroList = heroes.length ?  <HeroesList heroes={heroes} universe={universe} dispatch={dispatch}/> :  <EmptyHeroes/>;
 
 	const add = async () => {
-		const data = {
-			name: heroToAdd.name,
-			universe: heroToAdd.universe
-		};
 		try {
-			addHero(data).then(res => dispatch(actions.addHero(res)));
+			addHero(heroToAdd).then(res => {
+			(document.getElementById('add_btn') as HTMLInputElement).disabled = true;
+			dispatch(actions.addHero(res));
+			dispatch(actions.clearAddHero());
+			clearAddForm();
+		});
 			// window.M.toast({html: "Hero "+heroToAdd.name+" was added"})
 		} catch (e) {
 			// window.M.toast(e);
 		}
 	};
 
+	const clearAddForm = () => {
+		setTimeout(() => {
+			(document.getElementById('rMarvel') as HTMLInputElement).checked = false;
+			(document.getElementById('rDC') as HTMLInputElement).checked = false;
+			(document.getElementById('power_hit') as HTMLInputElement).checked = false;
+			(document.getElementById('heal') as HTMLInputElement).checked = false;
+			(document.getElementById('add_btn') as HTMLInputElement).disabled = false;
+			(document.getElementById('add_input') as HTMLInputElement).value = '';
+		}, 300);
+	};
+
+	function onCheck (e: React.FormEvent<HTMLInputElement>){
+		if (e.currentTarget.checked) {
+			dispatch(actions.addSkill(e.currentTarget.value));
+		} else {
+			dispatch(actions.removeSkill(e.currentTarget.value));
+		}
+	}
+
+	const inputEventHadler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		e.persist();
+		clearTimeout(timeout);
+		timeout = setTimeout(() => {
+			dispatch(actions.updateAddHeroName(e.target.value));
+		}, 300);
+	};
+
 	return(
-		<div>
+		<>
 			<h1> Heroes List</h1>
 			<Link to='/main'> <Button className='waves-effect waves-light btn' text='Dashboard'/></Link>
 			{heroList}
 			<div>
 				Add new hero
-				<input type='text' onChange={(e) => dispatch(actions.updateAddHeroName(e.target.value))}/>
-				<Button className='waves-effect waves-light btn' onClick={add} text='Add hero'/>
-				<RadioButton  className='with-gap' value='Marvel' text='Marvel'  dispatch={() => dispatch(actions.updateAddHeroUniverse('Marvel'))}/>
-				<RadioButton  className='with-gap' value='DC' text='DC'   dispatch={() => dispatch(actions.updateAddHeroUniverse('DC'))}/>
+				<input id='add_input' type='text' onChange={(e) => inputEventHadler(e)}/>
+				<Button id='add_btn' className='waves-effect waves-light btn' onClick={add} text='Add hero'/>
+				<div>
+					<strong> Choose universe: </strong>
+					<RadioButton id='rMarvel' name='group1' className='with-gap' value='Marvel' text='Marvel'  dispatch={() => dispatch(actions.updateAddHeroUniverse('Marvel'))}/>
+					<RadioButton id='rDC' name='group1' className='with-gap' value='DC' text='DC'   dispatch={() => dispatch(actions.updateAddHeroUniverse('DC'))}/>
+				</div>
+				<div>
+					<strong> Choose skills: </strong>
+					<RadioButton id='power_hit'  type='checkbox' className='with-gap' value='Power Hit' text='Power Hit'   dispatch={onCheck}/>
+					<RadioButton id='heal'  type='checkbox' className='with-gap' value='Heal' text='Heal'   dispatch={onCheck}/>
+				</div>
 			</div>
 
 			<Button text='Go back' className='waves-effect waves-light btn' onClick={() => props.history.goBack()}/>
-		</div>
+		</>
 	);
 };
 export default HeroList;

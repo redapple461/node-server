@@ -3,6 +3,6 @@ import { ButtonProps } from '../interfaces/iComponents/ButtonProps';
 
 export const Button: React.SFC<ButtonProps> = (props) => {
 	return(
-		<button className={props.className} onClick={props.onClick}> {props.text} </button>
+		<button id={props.id} className={props.className} onClick={props.onClick}> {props.text} </button>
 	);
 };

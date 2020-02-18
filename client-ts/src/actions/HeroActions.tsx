@@ -13,3 +13,6 @@ export const CLEAR_DETAIL_HERO = 'CLEAR_DETAIL_HERO';
 export const DETAIL_LOADED = 'DETAIL_LOADED';
 export const UPDATE_HERO = 'UPDATE_HERO';
 export const UPDATE_UNIVERSE = 'UPDATE_UNIVERSE';
+export const ADD_ASKILL = 'ADD_ASKILL';
+export const REMOVE_ASKILL = 'REMOVE_ASKILL';
+export const CLEAR_ADD_HERO = 'CLEAR_ADD_HERO';

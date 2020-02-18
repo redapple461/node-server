@@ -5,7 +5,7 @@ import { NotFoundProps } from '../interfaces/iComponents/404Props';
 
 export const NoPage: React.SFC<NotFoundProps> = (props) => {
 	return(
-		<div>
+		<>
 			<h1>Didnt find hero with name : <span className='error'>{props.name}</span></h1>
 			<Link to={{ pathname: '/main'}}>
 				<Button
@@ -14,6 +14,6 @@ export const NoPage: React.SFC<NotFoundProps> = (props) => {
 					type='button'
 				/>
 			</Link>
-		</div>
+		</>
 	);
 };
