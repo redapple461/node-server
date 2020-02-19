@@ -6,8 +6,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = __importStar(require("express"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const schema_1 = require("../models/schema");
 class HeroController {
     constructor() {
@@ -18,8 +22,8 @@ class HeroController {
                 const _heroes = [];
                 for (const hero of data) {
                     schema_1.universeModel.findOne({ _id: hero.universe }, (err, universeData) => {
-                        schema_1.skillsModel.find({ _id: hero.skills }, (err, skillData) => {
-                            const pushHero = { id: hero.id, name: hero.name, universe: universeData.universe, skills: skillData.map((obj) => obj.skill) };
+                        schema_1.skillsModel.findOne({ hero_id: hero._id }, (err, skillData) => {
+                            const pushHero = { id: hero.id, name: hero.name, universe: universeData.universe, skills: skillData.skills };
                             _heroes.push(pushHero);
                             if (_heroes.length === data.length) {
                                 res.send(_heroes);
@@ -47,9 +51,12 @@ class HeroController {
                     // if(searchErr) console.log(err)
                     if (!searchRes) {
                         schema_1.universeModel.findOne({ universe: hero.universe }, (error, searchId) => {
-                            schema_1.skillsModel.find({ skill: hero.skills }, (err, skillsData) => {
-                                this.model.create({ id: hero.id, name: hero.name, universe: searchId, skills: skillsData }, (_err, _res) => {
-                                    return res.status(200).send(hero);
+                            const heroSkills = req.body.skills;
+                            const heroId = new mongoose_1.default.Types.ObjectId();
+                            const skillsId = new mongoose_1.default.Types.ObjectId();
+                            schema_1.skillsModel.create({ _id: skillsId, hero_id: heroId, skills: heroSkills }, (err, std) => {
+                                this.model.create({ _id: heroId, id: hero.id, name: hero.name, universe: searchId._id, skills: skillsId }, (er, re) => {
+                                    return res.send(hero);
                                 });
                             });
                         });
@@ -65,8 +72,8 @@ class HeroController {
             console.log(`Get hero ${searchName}`);
             this.model.findOne({ name: searchName }, (err, data) => {
                 schema_1.universeModel.findOne({ _id: data.universe }, (err, universeData) => {
-                    schema_1.skillsModel.find({ _id: data.skills }, (err, skillData) => {
-                        res.send({ id: data.id, name: data.name, universe: universeData.universe, skills: skillData.map((obj) => obj.skill) });
+                    schema_1.skillsModel.findOne({ hero_id: data._id }, (err, skillData) => {
+                        res.send({ id: data.id, name: data.name, universe: universeData.universe, skills: skillData.skills });
                     });
                 });
             });
@@ -78,13 +85,17 @@ class HeroController {
             const oldName = req.params.oldName;
             const hero = req.body;
             console.log(`Old name ${oldName} will update with values ${hero.name}: ${hero.universe}`);
-            schema_1.universeModel.findOne({ universe: hero.universe }, (err, _res) => {
-                schema_1.skillsModel.find({ skill: hero.skills }, (err, skillsData) => {
-                    const qHero = { name: hero.name, universe: _res._id, skills: skillsData };
-                    const query = { $set: qHero };
-                    this.model.updateOne({ name: oldName }, query, () => {
-                        // if (err) {return res.send(err); }
-                        res.send({ message: `Hero ${oldName} was update - ${hero.name}: ${hero.universe}` });
+            this.model.findOne({ name: oldName }, (err, some) => {
+                schema_1.universeModel.findOne({ universe: hero.universe }, (err, _res) => {
+                    schema_1.skillsModel.findOne({ hero_id: some._id }, (err, skillsData) => {
+                        schema_1.skillsModel.updateOne({ _id: skillsData._id }, { $set: { skills: req.body.skills } }, (err, otv) => {
+                            const qHero = { name: hero.name, universe: _res._id, skills: skillsData._id };
+                            const query = { $set: qHero };
+                            this.model.updateOne({ name: oldName }, query, () => {
+                                // if (err) {return res.send(err); }
+                                res.send({ message: `Hero ${oldName} was update - ${hero.name}: ${hero.universe}` });
+                            });
+                        });
                     });
                 });
             });
@@ -92,9 +103,12 @@ class HeroController {
         this.deleteHero = (req, res) => {
             const deleteName = req.params.name;
             console.log(`Hero to delete ${deleteName}`);
-            this.model.deleteOne({ name: deleteName }, (err) => {
-                // if(err) res.send(err)
-                res.send({ message: `Hero ${deleteName} was deleted` });
+            this.model.findOne({ name: deleteName }, (err, data) => {
+                this.model.deleteOne({ _id: data._id }, (err) => {
+                    schema_1.skillsModel.deleteOne({ hero_id: data._id }, err => {
+                        res.send({ message: `Hero ${deleteName} was deleted` });
+                    });
+                });
             });
         };
         this.initRoutes();

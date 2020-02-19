@@ -9,15 +9,16 @@ const hero = new Schema({
     id: {type: Number},
     name: {type: String, unique: true},
     universe: {type: ObjectId},
-    skills: {type: [ObjectId]}
+    skills: {type: ObjectId}
 });
 
 const universe = new Schema({
-  universe: {type: String}
+  universe: {type: String, unique: true}
 });
 
 const skills = new Schema({
-  skill: {type: String}
+  hero_id: {type: ObjectId, unique: true},
+  skills: {type: [String]}
 });
 
 const db = mongo.connect(connectUrl, (err: Error, res: mongo.Response) => {

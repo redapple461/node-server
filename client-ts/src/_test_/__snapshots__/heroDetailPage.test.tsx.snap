@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HeroList/> test should render with given state from Redux store 1`] = `
+Array [
+  <h1>
+    Ironman
+     details
+  </h1>,
+  <strong>
+     id: 
+    0
+     
+  </strong>,
+  <br />,
+  <strong>
+     Name: 
+    Ironman
+     
+  </strong>,
+  <br />,
+  <strong>
+     Universe: 
+    DC
+     
+  </strong>,
+  <br />,
+  <strong>
+     Skills : 
+    <ul
+      style={
+        Object {
+          "color": "red",
+        }
+      }
+    >
+      <div>
+         
+        Heal
+         
+      </div>
+    </ul>
+  </strong>,
+  <div
+    className="form"
+  >
+    <p>
+       Type new name of hero and choose his universe
+    </p>
+    <input
+      onChange={[Function]}
+      placeholder="Ironman"
+      type="text"
+    />
+    <div>
+      <label>
+        <input
+          checked={false}
+          className="with-gap"
+          onChange={[Function]}
+          type="radio"
+          value="Marvel"
+        />
+        <span>
+          Marvel
+        </span>
+      </label>
+      <label>
+        <input
+          checked={true}
+          className="with-gap"
+          onChange={[Function]}
+          type="radio"
+          value="DC"
+        />
+        <span>
+          DC
+        </span>
+      </label>
+    </div>
+  </div>,
+  <button
+    className="waves-effect waves-light btn"
+    onClick={[Function]}
+  >
+     
+    Back
+     
+  </button>,
+  <button
+    className="waves-effect waves-light btn"
+    onClick={[Function]}
+  >
+     
+    Save
+     
+  </button>,
+]
+`;

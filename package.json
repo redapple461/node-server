@@ -21,7 +21,10 @@
     "start": "node ./server/server.js",
     "server": "cd server && npm start",
     "client": "cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "server-ts": "cd server-ts && npm start",
+    "client-ts": "cd client-ts && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev-ts": "concurrently \"npm run server-ts\" \"npm run client-ts\""
   },
   "repository": {
     "type": "git",
