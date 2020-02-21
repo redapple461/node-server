@@ -1,0 +1,22 @@
+import { Hero } from '../models/Hero';
+import { HeroActionsType } from '../actions/types/HeroTypes';
+export declare function setMarvel(): HeroActionsType;
+export declare function setDC(): HeroActionsType;
+export declare function setBoth(): HeroActionsType;
+export declare function getData(data: Hero[]): HeroActionsType;
+export declare function loadComplete(): HeroActionsType;
+export declare function addHero(hero: Hero): HeroActionsType;
+export declare function deleteHero(id: number): HeroActionsType;
+export declare function initDetailHero(hero: Hero): HeroActionsType;
+export declare function updateName(newName: string): HeroActionsType;
+export declare function updateUniverse(newUniverse: string): HeroActionsType;
+export declare function updateHero(): HeroActionsType;
+export declare function updateAddHeroName(addName: string): HeroActionsType;
+export declare function updateAddHeroUniverse(addUniverse: string): HeroActionsType;
+export declare function clearDetailHero(): HeroActionsType;
+export declare function isLoad(): HeroActionsType;
+export declare function addSkill(skillToAdd: string): HeroActionsType;
+export declare function removeSkill(skillToRemove: string): HeroActionsType;
+export declare function clearAddHero(): {
+    type: string;
+};
