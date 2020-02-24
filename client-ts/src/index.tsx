@@ -7,12 +7,16 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 declare global {
-	interface Window { __REDUX_DEVTOOLS_EXTENSION__: any; }
+	interface Window { 
+		__REDUX_DEVTOOLS_EXTENSION__: any;
+		__PRELOADED_STATE__: any;
+	}
 }
 
-const store = createStore(reducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const preloadedState = window.__PRELOADED_STATE__;
+const store = createStore(reducer, preloadedState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-ReactDOM.render(
+ReactDOM.hydrate(
 (
 <Provider store={store}>
 	<App />

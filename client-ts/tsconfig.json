@@ -32,7 +32,7 @@
   "allowSyntheticDefaultImports": true,
   "include": [
     "./src/**/*",
-    "src/.babelrc..js"
+    "src/.babelrc.js"
   ],
   "exclude": [
     "node_modules",

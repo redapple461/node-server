@@ -1,6 +1,7 @@
 //const multi = require('multi-loader');
 const path = require("path");
 const nodeExternals = require('webpack-node-externals');
+// const HtmlWebpackPlugin  = require('html-webpack-plugin');
 module.exports = {
   mode: "development",
   entry: './src/index.tsx',
@@ -9,12 +10,12 @@ module.exports = {
     filename: 'bundle.js',  // Name of generated bundle after build
     publicPath: '/' // public URL of the output directory when referenced in a browser
   },
-  // Enable sourcemaps for debugging webpack's output.
-  devtool: "source-map",
   resolve: {
       // Add '.ts' and '.tsx' as resolvable extensions.
-      extensions: [".ts", ".tsx"]
+      extensions: [".ts", ".tsx", ".js", ".jsx"],
+      modules: ['node_modules'] 
   },
+  target: "web",
   module: {
       rules: [
           {
@@ -24,13 +25,11 @@ module.exports = {
           },
           {
               test: /\.css$/,
-              exclude: /node_modules/,
               use: ['style-loader','css-loader']
           }
-          // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+
       ]
   },
-  externals: [nodeExternals()],
 
   devServer: {
     port: 9000

@@ -5,8 +5,10 @@
       "esModuleInterop": true,
       "target": "es6",
       "moduleResolution": "node",
+      "jsx": "react",
       "sourceMap": true,
-      "outDir": "dist"
+      "outDir": "dist",
+      "skipLibCheck": true
     },
-    "exclude": ["node_modules", "**/*.spec.ts"]
+    "exclude": ["node_modules", "**/*.spec.ts","*.css"]
   }

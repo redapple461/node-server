@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SET_MARVEL = 'SET_MARVEL';
+exports.SET_DC = 'SET_DC';
+exports.SET_BOTH = 'SET_BOTH';
+exports.GET_DATA = 'GET_DATA';
+exports.HEROES_LOADED = 'HEROES_LOADED';
+exports.ADD_HERO = 'ADD_HERO';
+exports.DELETE_HERO = 'DELETE_HERO';
+exports.INIT_HERO = 'INIT_HERO';
+exports.UPDATE_NAME = 'UPDATE_NAME';
+exports.UPDATE_ADD_HERO_NAME = 'UPDATE_ADD_HERO_NAME';
+exports.UPDATE_ADD_HERO_UNIVERSE = 'UPDATE_ADD_HERO_UNIVERSE';
+exports.CLEAR_DETAIL_HERO = 'CLEAR_DETAIL_HERO';
+exports.DETAIL_LOADED = 'DETAIL_LOADED';
+exports.UPDATE_HERO = 'UPDATE_HERO';
+exports.UPDATE_UNIVERSE = 'UPDATE_UNIVERSE';
+exports.ADD_ASKILL = 'ADD_ASKILL';
+exports.REMOVE_ASKILL = 'REMOVE_ASKILL';
+exports.CLEAR_ADD_HERO = 'CLEAR_ADD_HERO';
+//# sourceMappingURL=HeroActions.js.map

@@ -14,7 +14,7 @@ const init: HeroStore = {
 	noHeroes: true
 };
 
-export default function reducer (state = init, action: HeroActionsType): HeroStore {
+export default function reducer (state = init, action?: HeroActionsType): HeroStore {
 	switch (action.type) {
 		case actions.SET_MARVEL:
 			return{

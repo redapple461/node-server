@@ -29,7 +29,7 @@ class App {
   private initControllers (HeroController: HeroController, SkillController: SkillController, API: API) {
       this.app.use('', HeroController.router);
       this.app.use('/skills', SkillController.router);
-      this.app.use('', API.router);
+      this.app.use('^/$', API.router);
   }
 
   public getServer () {
