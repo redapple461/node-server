@@ -4,8 +4,11 @@ import { Button } from './button';
 import * as actions from '../actions';
 import { deleteByName } from '../http/httpHook';
 import { HListProps } from '../interfaces/iComponents/HListProps';
+import { useSelector } from 'react-redux';
+import { HeroStore } from '../interfaces/iStore/HeroStore';
 
 export const HeroesList: React.SFC<HListProps> = (props) => {
+	const token = useSelector((state: HeroStore) => state.jwt);
 	return(
 		<ul>
 			{props.heroes.filter(hero => {
@@ -20,7 +23,7 @@ export const HeroesList: React.SFC<HListProps> = (props) => {
 								text='x'
 								className='waves-effect red btn'
 								onClick={() =>
-								deleteByName(hero.name).then(() => {props.dispatch(actions.deleteHero(hero.id)); /*window.M.toast({html: "Hero "+hero.name+" was delete"})*/})}
+								deleteByName(hero.name, token).then(() => {props.dispatch(actions.deleteHero(hero.id)); /*window.M.toast({html: "Hero "+hero.name+" was delete"})*/})}
 							/>
 						</div>
 				);

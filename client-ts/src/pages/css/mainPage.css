@@ -23,3 +23,7 @@ h2{
 .error{
     color: rgb(160, 33, 33);
 }
+
+.rightbtn{
+  float: right;
+}

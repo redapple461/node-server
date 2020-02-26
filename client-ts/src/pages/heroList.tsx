@@ -11,6 +11,7 @@ import { getHeroes, addHero } from '../http/httpHook';
 import { HeroStore } from '../interfaces/iStore/HeroStore';
 
 const HeroList = (props: any) => {
+	const token = useSelector((state: HeroStore) => state.jwt);
 	const heroes = useSelector((state: HeroStore) => state.heroes);
 	const universe = useSelector((state: HeroStore) => state.searchUniverse);
 	const isUnLoad = useSelector((state: HeroStore) => state.noHeroes);
@@ -20,7 +21,7 @@ const HeroList = (props: any) => {
 	let timeout = null;
 	async function fetchData () {
 		try {
-			await getHeroes().then(res => {
+			await getHeroes(token).then(res => {
 				res.sort((a, b) => a.id - b.id);
 				dispatch(actions.getData(res));
 			});
@@ -44,7 +45,7 @@ const HeroList = (props: any) => {
 
 	const add = async () => {
 		try {
-			addHero(heroToAdd).then(res => {
+			addHero(heroToAdd, token).then(res => {
 			(document.getElementById('add_btn') as HTMLInputElement).disabled = true;
 			dispatch(actions.addHero(res));
 			dispatch(actions.clearAddHero());
@@ -83,9 +84,15 @@ const HeroList = (props: any) => {
 		}, 300);
 	};
 
+	const logout = () => {
+		dispatch(actions.logout());
+		localStorage.removeItem('userData');
+	};
+
 	return(
 		<>
 			<h1> Heroes List</h1>
+			<Button className='waves-effect waves-light btn rightbtn' text='Logout' onClick={() => logout()}/>
 			<Link to='/main'> <Button className='waves-effect waves-light btn' text='Dashboard'/></Link>
 			{heroList}
 			<div>

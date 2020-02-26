@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const EmptyHeroes = () => {
+export const EmptyHeroes = (props) => {
 	return(
 		<>
-			<h1 className='error'> No heroes :( </h1>
+			<h1 className='error'> {props.text} </h1>
 		</>
 	);
 };

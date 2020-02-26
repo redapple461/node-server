@@ -5,16 +5,17 @@ import bodyParser from 'body-parser';
 import HeroController from './routes/app.routes';
 import SkillController from './routes/skill.routes';
 import API from './routes/api.routes';
+import AuthController from './routes/auth.router';
 
 class App {
   private app: express.Application;
   private port: number;
 
-  constructor (HeroController: HeroController, SkillController: SkillController, API: API) {
+  constructor (HeroController: HeroController, SkillController: SkillController, API: API, AuthController: AuthController) {
     this.app = express();
     this.port = config.get('port');
     this.initMidleware();
-    this.initControllers(HeroController, SkillController,API);
+    this.initControllers(HeroController, SkillController, API, AuthController);
   }
 
   private initMidleware () {
@@ -26,10 +27,11 @@ class App {
     this.app.use(express.static('./src/static'));
   }
 
-  private initControllers (HeroController: HeroController, SkillController: SkillController, API: API) {
+  private initControllers (HeroController: HeroController, SkillController: SkillController, API: API, AuthController: AuthController) {
       this.app.use('', HeroController.router);
       this.app.use('/skills', SkillController.router);
       this.app.use('^/$', API.router);
+      this.app.use('/auth', AuthController.router);
   }
 
   public getServer () {

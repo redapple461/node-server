@@ -8,8 +8,8 @@ const connectUrl = `mongodb://${host}:${port}/${name}`;
 const hero = new Schema({
     id: {type: Number},
     name: {type: String, unique: true},
-    universe: {type: ObjectId},
-    skills: {type: ObjectId}
+    universe: {type: ObjectId, link: 'univers'},
+    skills: {type: ObjectId, link: 'skills'}
 });
 
 const universe = new Schema({
@@ -17,13 +17,24 @@ const universe = new Schema({
 });
 
 const skills = new Schema({
-  hero_id: {type: ObjectId, unique: true},
+  hero_id: {type: ObjectId, unique: true , link: 'heroes'},
   skills: {type: [String]}
 });
+
+const user = new Schema({
+  email: {type: String, required: true, unique: true},
+  phone: {type: String, required: true,},
+  name: {type: String, required: true,},
+  surname: {type: String, required: true,},
+  password: {type: String, required: true,}
+
+})
 
 const db = mongo.connect(connectUrl, (err: Error, res: mongo.Response) => {
     console.log('Connect to ' + db + res);
 });
+
+export const User = mongo.model('user', user, 'user');
 
 export const universeModel = mongo.model('universe', universe, 'universe');
 

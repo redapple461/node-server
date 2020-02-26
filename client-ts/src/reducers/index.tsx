@@ -1,4 +1,3 @@
-import { updateHero } from '../http/httpHook';
 import { Hero } from '../models/Hero';
 import { HeroStore } from '../interfaces/iStore/HeroStore';
 import { HeroActionsType } from '../actions/types/HeroTypes';
@@ -11,10 +10,20 @@ const init: HeroStore = {
 	addHero: {name: '', universe: '', skills: []},
 	detailHero: null,
 	isLoad: false,
-	noHeroes: true
+	noHeroes: true,
+	email: '',
+	password: '',
+	registerEmail: '',
+	registerPassowrd: '',
+	userId: '',
+	jwt: '',
+	userName: '',
+	surname: '',
+	phone: ''
 };
 
 export default function reducer (state = init, action?: HeroActionsType): HeroStore {
+
 	switch (action.type) {
 		case actions.SET_MARVEL:
 			return{
@@ -83,7 +92,6 @@ export default function reducer (state = init, action?: HeroActionsType): HeroSt
 				detailHero: {...state.detailHero, universe: action.newUniverse}
 			};
 		case actions.UPDATE_HERO:
-			updateHero(state.oldName, state.detailHero);
 			return{
 				...state,
 				heroes:  state.heroes.map((hero: Hero) => hero.id === state.detailHero.id ?
@@ -108,10 +116,70 @@ export default function reducer (state = init, action?: HeroActionsType): HeroSt
 				addHero: {...state.addHero, skills: state.addHero.skills.filter(skill => skill !== action.skillToRemove)}
 		};
 		case actions.CLEAR_ADD_HERO:
-		return{
-			...state,
-			addHero: {name: '', universe: '', skills: []}
-		};
+			return{
+				...state,
+				addHero: {name: '', universe: '', skills: []}
+			};
+		case actions.SET_EMAIL:
+			return{
+				...state,
+				email: action.email
+			};
+		case actions.SET_PASSWORD:
+			return{
+				...state,
+				password: action.password
+			};
+		case actions.SET_REG_EMAIL:
+			return{
+				...state,
+				registerEmail: action.regEmail
+			};
+		case actions.SET_REG_PASSWORD:
+			return{
+				...state,
+				registerPassowrd: action.regPassword
+			};
+		case actions.SET_USER_ID:
+			return{
+				...state,
+				userId: action.userId
+			};
+		case actions.SET_JWT:
+			return{
+				...state,
+				jwt: action.jwt
+			};
+		case actions.LOGOUT:
+			return{
+				...state,
+				jwt: '',
+				userId: '',
+				email: '',
+				password: ''
+			};
+		case actions.SET_USER_NAME:
+			return{
+				...state,
+				userName: action.userName
+			};
+		case actions.SET_USER_SURNAME:
+			return{
+				...state,
+				surname: action.surname
+			};
+		case actions.SET_USER_PHONE:
+			return{
+				...state,
+				phone: action.phone
+			};
+		case actions.CLEAR_REG_DATA:
+			return{
+				...state,
+				userName: '',
+				surname: '',
+				phone: ''
+			};
 		default:
 			return state;
 	}

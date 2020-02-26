@@ -11,15 +11,18 @@ import { getHeroes } from '../http/httpHook';
 import { HeroStore } from '../interfaces/iStore/HeroStore';
 
 export const MainPage = () => {
+	const token = useSelector((state: HeroStore) => state.jwt);
 	const universe =  useSelector((state: HeroStore) => state.searchUniverse);
 	const heroes = useSelector((state: HeroStore) => state.heroes.slice(state.heroes.length - 4, state.heroes.length).reverse());
 	const dispatch = useDispatch();
 	const isUnLoad = useSelector((state: HeroStore) => state.noHeroes);
 	const isLoad = useSelector((state: HeroStore) => state.isLoad);
-
 	async function fetchData () {
-		return  getHeroes()
+		return  getHeroes(token)
 		.then(res => {
+				if (res.message) {
+					return window.M.toast({html: 'No auth!!!'});
+				}
 				res.sort((a, b) => a.id - b.id);
 				dispatch(actions.getData(res));
 			}
@@ -36,12 +39,17 @@ export const MainPage = () => {
 		}
 	});
 
-	const dashboard = heroes.length ? <Dashboard heroes={heroes}/> : <EmptyHeroes/>;
+	const dashboard = heroes.length ? <Dashboard heroes={heroes}/> : <EmptyHeroes text='No heroes :('/>;
 
+	const logout = () => {
+		dispatch(actions.logout());
+		localStorage.removeItem('userData');
+	}
 	return(
 		<>
 			<div>
 				<h1> Tours of heroes</h1>
+				<Button className='waves-effect waves-light btn rightbtn' text='Logout' onClick={() => logout()}/>
 			</div>
 			<div>
 				<Link to={{pathname: '/heroes'}}>

@@ -119,3 +119,78 @@ export function clearAddHero () {
 		type: actions.CLEAR_ADD_HERO
 	};
 }
+
+export function setEmail (email: string): HeroActionsType {
+	return{
+		type: actions.SET_EMAIL,
+		email
+	};
+}
+
+export function setPassword (password: string): HeroActionsType {
+	return{
+		type: actions.SET_PASSWORD,
+		password
+	};
+}
+
+export function setRegEmail (regEmail: string): HeroActionsType {
+	return{
+		type: actions.SET_REG_EMAIL,
+		regEmail
+	};
+}
+
+export function setRegPassword (regPassword: string): HeroActionsType {
+	return{
+		type: actions.SET_REG_PASSWORD,
+		regPassword
+	};
+}
+
+export function setUserId (userId: string): HeroActionsType {
+	return{
+		type: actions.SET_USER_ID,
+		userId
+	};
+}
+
+export function setJWT (jwt: string): HeroActionsType {
+	return{
+		type: actions.SET_JWT,
+		jwt
+	};
+}
+
+export function logout (): HeroActionsType {
+	return{
+		type: actions.LOGOUT
+	}
+}
+
+export function setUserName (userName: string): HeroActionsType {
+	return{
+		type: actions.SET_USER_NAME,
+		userName
+	};
+}
+
+export function setUserSurname (surname: string): HeroActionsType {
+	return{
+		type: actions.SET_USER_SURNAME,
+		surname
+	};
+}
+
+export function setUserPhone (phone: string): HeroActionsType {
+	return{
+		type: actions.SET_USER_PHONE,
+		phone
+	};
+}
+
+export function clearRegData (): HeroActionsType {
+	return{
+		type: actions.CLEAR_REG_DATA
+	};
+}

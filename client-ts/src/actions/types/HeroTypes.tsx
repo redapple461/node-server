@@ -82,5 +82,59 @@ interface ClearAddHero {
 	type: typeof actions.CLEAR_ADD_HERO;
 }
 
+interface SetEmail {
+	type: typeof actions.SET_EMAIL;
+	email: string;
+}
+
+interface SetPassword {
+	type: typeof actions.SET_PASSWORD;
+	password: string;
+}
+
+interface SetRegEmail {
+	type: typeof actions.SET_REG_EMAIL;
+	regEmail: string;
+}
+
+interface SetRegPassword {
+	type: typeof actions.SET_REG_PASSWORD;
+	regPassword: string;
+}
+
+interface SetUserId {
+	type: typeof actions.SET_USER_ID;
+	userId: string;
+}
+
+interface SetJWT {
+	type: typeof actions.SET_JWT;
+	jwt: string;
+}
+
+interface Logout {
+	type: typeof actions.LOGOUT;
+}
+
+interface SetUserName {
+	type: typeof actions.SET_USER_NAME;
+	userName: string;
+}
+
+interface SetUserSurname {
+	type: typeof actions.SET_USER_SURNAME;
+	surname: string;
+}
+
+interface SetUserPhone {
+	type: typeof actions.SET_USER_PHONE;
+	phone: string;
+}
+
+interface ClearRegData {
+	type: typeof actions.CLEAR_REG_DATA;
+}
+
 export type HeroActionsType = SetMarvel | SetDC | SetBoth | GetData | AddHero | DeleteHero | LoadComplete | InitDetailHero | UpdateName | UpdateUniverse | UpdateAddHeroName |
-	UpdateAddHeroUniverse | UpdateHero | ClearDetailHero | IsLoad | AddSkill | RemoveSkill | ClearAddHero;
+	UpdateAddHeroUniverse | UpdateHero | ClearDetailHero | IsLoad | AddSkill | RemoveSkill | ClearAddHero | SetEmail | SetPassword | SetRegEmail | SetRegPassword | SetUserId | 
+	SetJWT | Logout | SetUserName | SetUserPhone| SetUserSurname | ClearRegData;

@@ -7,9 +7,10 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 declare global {
-	interface Window { 
+	interface Window {
 		__REDUX_DEVTOOLS_EXTENSION__: any;
 		__PRELOADED_STATE__: any;
+		M: any;
 	}
 }
 

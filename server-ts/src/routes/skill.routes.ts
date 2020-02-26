@@ -2,7 +2,7 @@ import * as express from 'express';
 import { Schema } from 'mongoose';
 import { HeroInterface } from '../models/hero.model';
 import { skillsModel } from '../models/schema';
-
+import { auth } from '../midleware/auth.midleware';
 
 class SkillController {
     public router: express.Router = express.Router();
@@ -12,11 +12,11 @@ class SkillController {
     }
 
     public initRoutes () {
-        this.router.get('/getSkills', this.getAllSkills);
-        this.router.post('/addSkill', this.addSkill);
-        this.router.get('/getSkill/:name', this.getSkill);
-        this.router.delete('/deleteSkill/:name', this.deleteSkill);
-        this.router.put('/updateSkill/:oldName', this.updateSKill);
+        this.router.get('/getSkills', auth, this.getAllSkills);
+        this.router.post('/addSkill', auth, this.addSkill);
+        this.router.get('/getSkill/:name', auth, this.getSkill);
+        this.router.delete('/deleteSkill/:name', auth, this.deleteSkill);
+        this.router.put('/updateSkill/:oldName', auth, this.updateSKill);
     }
 
     private getAllSkills = (req: express.Request, res: express.Response) => {
