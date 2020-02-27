@@ -19,7 +19,8 @@ const init: HeroStore = {
 	jwt: '',
 	userName: '',
 	surname: '',
-	phone: ''
+	phone: '',
+	user: null
 };
 
 export default function reducer (state = init, action?: HeroActionsType): HeroStore {
@@ -179,6 +180,36 @@ export default function reducer (state = init, action?: HeroActionsType): HeroSt
 				userName: '',
 				surname: '',
 				phone: ''
+			};
+		case actions.SET_USER:
+			return{
+				...state,
+				user: action.user
+			};
+		case actions.UPDATE_USER_EMAIL:
+			return{
+				...state,
+				user: {...state.user, email: action.newEmail}
+			};
+		case actions.UPDATE_USER_NAME:
+			return{
+				...state,
+				user: {...state.user, name: action.newName}
+			};
+		case actions.UPDATE_USER_SURNAME:
+			return{
+				...state,
+				user: {...state.user, surname: action.newSurname}
+			};
+		case actions.UPDATE_USER_PHONE:
+			return{
+				...state,
+				user: {...state.user, phone: action.newPhone}
+			};
+		case actions.UPDATE_USER_PASSWORD:
+			return{
+				...state,
+				user: {...state.user, password: action.newPassword}
 			};
 		default:
 			return state;

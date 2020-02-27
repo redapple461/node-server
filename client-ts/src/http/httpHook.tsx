@@ -1,4 +1,5 @@
 import {Hero} from '../models/Hero';
+import {User} from '../models/User';
 
 export const getHeroes = (token: string) => {
 	return fetch('http://localhost:4000/getHeroes',{
@@ -80,3 +81,14 @@ export const register =(email: string, password: string, name: string, surname: 
 		}
 	}).then(res => res.json());
 };
+
+export const change = (id: string, token: string, user: User) => {
+	return fetch(`http://localhost:4000/user/getUser/:${id}`, {
+		method: 'GET',
+		body: JSON.stringify(user),
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: token
+		}
+	});
+}

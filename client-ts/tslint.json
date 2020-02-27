@@ -42,7 +42,7 @@
       "quotemark": [true, "single", "jsx-single"],
       "semicolon": [true, "always"],
       "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"],
-      "cyclomatic-complexity": [true, 30],
+      "cyclomatic-complexity": [true, 45],
       "interface-name": [true, "never-prefix"],
       "jsx-alignment": true,
       "jsx-no-lambda": false,

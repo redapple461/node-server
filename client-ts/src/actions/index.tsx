@@ -1,6 +1,7 @@
 import { Hero } from '../models/Hero';
 import {HeroActionsType} from '../actions/types/HeroTypes';
 import * as actions from '../actions/HeroActions';
+import { User } from '../models/User';
 
 export function setMarvel (): HeroActionsType {
 	return{
@@ -192,5 +193,47 @@ export function setUserPhone (phone: string): HeroActionsType {
 export function clearRegData (): HeroActionsType {
 	return{
 		type: actions.CLEAR_REG_DATA
+	};
+}
+
+export function setUser (user: User): HeroActionsType {
+	return{
+		type: actions.SET_USER,
+		user
+	};
+}
+
+export function updateUserName (newName: string): HeroActionsType {
+	return{
+		type: actions.UPDATE_USER_NAME,
+		newName
+	};
+}
+
+export function updateUserSurname (newSurname: string): HeroActionsType {
+	return{
+		type: actions.UPDATE_USER_SURNAME,
+		newSurname
+	};
+}
+
+export function updateUserEmail (newEmail: string): HeroActionsType {
+	return{
+		type: actions.UPDATE_USER_EMAIL,
+		newEmail
+	};
+}
+
+export function updateUserPhone (newPhone: string): HeroActionsType {
+	return{
+		type: actions.UPDATE_USER_PHONE,
+		newPhone
+	};
+}
+
+export function updateUserPassword (newPassword: string): HeroActionsType {
+	return{
+		type: actions.UPDATE_USER_PASSWORD,
+		newPassword
 	};
 }

@@ -6,6 +6,7 @@ import { NotFound } from '../pages/notFound';
 import { HeroDetailPage } from '../pages/heroDetailPage';
 import { AuthPage } from '../pages/authPage';
 import { RegisterPage } from '../pages/registerPage';
+import { UserProfile } from '../pages/userProfile';
 
 export const useRoutes = (isAuth: boolean) => {
 	if (isAuth) {
@@ -20,6 +21,7 @@ export const useRoutes = (isAuth: boolean) => {
 				<Route path='/'>
 					<Redirect to='/main' />
 				</Route>
+				<Route path='/userProfile' component={UserProfile} />
 				<Redirect to='/notFound' />
 			</Switch>
 		);
@@ -34,5 +36,5 @@ export const useRoutes = (isAuth: boolean) => {
 		</Route>
 			<Redirect to='/' />
 		</Switch>
-	)
+	);
 };

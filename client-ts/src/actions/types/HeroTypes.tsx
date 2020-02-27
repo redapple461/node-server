@@ -1,5 +1,6 @@
 import { Hero } from '../../models/Hero';
 import * as actions from '../HeroActions';
+import { User } from '../../models/User';
 
 interface SetMarvel {
 	type: typeof actions.SET_MARVEL;
@@ -131,10 +132,40 @@ interface SetUserPhone {
 	phone: string;
 }
 
-interface ClearRegData {
+interface ClearRegData{
 	type: typeof actions.CLEAR_REG_DATA;
 }
 
+interface SetUser {
+	type: typeof actions.SET_USER;
+	user: User;
+}
+
+interface UpdateUserName {
+	type: typeof actions.UPDATE_USER_NAME;
+	newName: string;
+}
+
+interface UpdateUserSurname {
+	type: typeof actions.UPDATE_USER_SURNAME;
+	newSurname: string;
+}
+
+interface UpdateUserEmail {
+	type: typeof actions.UPDATE_USER_EMAIL;
+	newEmail: string;
+}
+
+interface UpdateUserPassword {
+	type: typeof actions.UPDATE_USER_PASSWORD;
+	newPassword: string;
+}
+
+interface UpdateUserPhone {
+	type: typeof actions.UPDATE_USER_PHONE;
+	newPhone: string;
+}
+
 export type HeroActionsType = SetMarvel | SetDC | SetBoth | GetData | AddHero | DeleteHero | LoadComplete | InitDetailHero | UpdateName | UpdateUniverse | UpdateAddHeroName |
-	UpdateAddHeroUniverse | UpdateHero | ClearDetailHero | IsLoad | AddSkill | RemoveSkill | ClearAddHero | SetEmail | SetPassword | SetRegEmail | SetRegPassword | SetUserId | 
-	SetJWT | Logout | SetUserName | SetUserPhone| SetUserSurname | ClearRegData;
+	UpdateAddHeroUniverse | UpdateHero | ClearDetailHero | IsLoad | AddSkill | RemoveSkill | ClearAddHero | SetEmail | SetPassword | SetRegEmail | SetRegPassword | SetUserId |
+	SetJWT | Logout | SetUserName | SetUserPhone| SetUserSurname | ClearRegData | SetUser | UpdateUserEmail | UpdateUserName | UpdateUserSurname | UpdateUserPassword | UpdateUserPhone;

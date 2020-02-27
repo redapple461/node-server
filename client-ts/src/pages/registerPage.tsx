@@ -14,7 +14,7 @@ export const RegisterPage = (props) => {
 	const name =  	useSelector((state: HeroStore) => state.userName);
 	const surname = useSelector((state: HeroStore) => state.surname);
 	const phone  = useSelector((state: HeroStore) => state.phone);
-	const storageName = 'userData';
+	const storageName = 'user_data';
 	const dispatch = useDispatch();
 	let timeout = null;
 
@@ -38,8 +38,10 @@ export const RegisterPage = (props) => {
 	const buttonEventHandler = () => {
 		http.register(email, password, name, surname, phone)
 		.then(res => {
-			if (res.message) {
-				return window.M.toast({html: res.message});
+			if (res.errors) {
+				return res.errors.errors.forEach(error => {
+					window.M.toast({html: error.msg});
+				});
 			}
 			window.M.toast({html: res.message});
 			dispatch(actions.clearRegData());
@@ -51,27 +53,27 @@ export const RegisterPage = (props) => {
 			<div className='row'>
 				<div className='col s6 offset-s3'>
 					<h1> Registrate page </h1>
-					<div className='card teal lighten-1'>
+					<div className='card teal lighten-4'>
 						<div className='card-content white-test'>
 							<div>
 								<div className='input-field'>
-									<input placeholder='Enter email' id='email' type='text' onChange={(e) => inputEventHandler(e, actions.setRegEmail(e.target.value))}/>
+									<input id='email' type='text' onChange={(e) => inputEventHandler(e, actions.setRegEmail(e.target.value))}/>
 									<label htmlFor='email'>Email</label>
 								</div>
 								<div className='input-field'>
-									<input placeholder='Enter password' id='password' type='password' onChange={(e) => inputEventHandler(e, actions.setRegPassword(e.target.value))}/>
+									<input id='password' type='password' onChange={(e) => inputEventHandler(e, actions.setRegPassword(e.target.value))}/>
 									<label htmlFor='password'>Password</label>
 								</div>
 								<div className='input-field'>
-									<input placeholder='Enter name' id='name' type='text' onChange={(e) => inputEventHandler(e, actions.setUserName(e.target.value))}/>
+									<input id='name' type='text' onChange={(e) => inputEventHandler(e, actions.setUserName(e.target.value))}/>
 									<label htmlFor='name'>Name</label>
 								</div>
 								<div className='input-field'>
-									<input placeholder='Enter surname' id='surname' type='text' onChange={(e) => inputEventHandler(e, actions.setUserSurname(e.target.value))}/>
+									<input id='surname' type='text' onChange={(e) => inputEventHandler(e, actions.setUserSurname(e.target.value))}/>
 									<label htmlFor='surname'>Surname</label>
 								</div>
 								<div className='input-field'>
-									<input placeholder='Enter phone' id='phone' type='text' onChange={(e) => inputEventHandler(e, actions.setUserPhone(e.target.value))}/>
+									<input id='phone' type='text' onChange={(e) => inputEventHandler(e, actions.setUserPhone(e.target.value))}/>
 									<label htmlFor='phone'>Phone</label>
 								</div>
 							</div>

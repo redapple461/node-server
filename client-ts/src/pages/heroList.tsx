@@ -86,7 +86,7 @@ const HeroList = (props: any) => {
 
 	const logout = () => {
 		dispatch(actions.logout());
-		localStorage.removeItem('userData');
+		localStorage.removeItem('user_data');
 	};
 
 	return(

@@ -1,4 +1,5 @@
 import { Hero } from '../../models/Hero';
+import { User } from '../../models/User';
 
 export interface HeroStore {
 	searchUniverse: string;
@@ -17,4 +18,5 @@ export interface HeroStore {
 	userName: string;
 	surname: string;
 	phone: string;
+	user: User;
 }

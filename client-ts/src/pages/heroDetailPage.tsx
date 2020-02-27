@@ -48,7 +48,7 @@ export const HeroDetailPage = (props: any) => {
 	}
 	const logout = () => {
 		dispatch(actions.logout());
-		localStorage.removeItem('userData');
+		localStorage.removeItem('user_data');
 	};
 	//               onChange={(e) => dispatch(actions.updateUniverse(e.target.value))}
 	return(

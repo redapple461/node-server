@@ -4,23 +4,23 @@ import { Button } from '../components/button';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../actions/index';
 import { HeroActionsType } from '../actions/types/HeroTypes';
-import * as http from '../http/httpHook';
 import { HeroStore } from '../interfaces/iStore/HeroStore';
 import { Link } from 'react-router-dom';
+import * as http from '../http/httpHook';
 
 export const AuthPage = () => {
 	const email = useSelector((state: HeroStore) => state.email);
 	const password = useSelector((state: HeroStore) => state.password);
-	const storageName = 'userData';
+	const storageName = 'user_data';
 	const dispatch = useDispatch();
 	let timeout = null;
 
 	useEffect(() => {
-		const data = JSON.parse(localStorage.getItem(storageName))
+		const data = JSON.parse(localStorage.getItem(storageName));
 
 		if (data && data.token) {
 			dispatch(actions.setJWT(data.token));
-			dispatch(actions.setUserId(data.userId));
+			dispatch(actions.setUser(data.user));
 		};
 	});
 
@@ -35,16 +35,18 @@ export const AuthPage = () => {
 	const buttonEventHandler = () => {
 		http.signIn(email, password)
 		.then(res => {
-			if (res.message) {
-				return window.M.toast({html: res.message});
+			if (res.errors) {
+				return res.errors.errors.forEach(error => {
+					window.M.toast({html: error.msg});
+				});
 			}
-			window.M.toast({html: `Hello ${res.name}`});
+			window.M.toast({html: `Hello ${res.user.name}`});
 			localStorage.setItem(storageName, JSON.stringify({
-				userId: res.userId,
+				user: res.user,
 				token: res.token
 			}));
 			dispatch(actions.setJWT(res.token));
-			dispatch(actions.setUserId(res.userId));
+			dispatch(actions.setUser(res.user));
 		});
 	};
 
@@ -52,15 +54,15 @@ export const AuthPage = () => {
 			<div className='row'>
 				<div className='col s6 offset-s3'>
 					<h1> Auth page </h1>
-					<div className='card teal lighten-1'>
+					<div className='card teal lighten-4'>
 						<div className='card-content white-test'>
 							<div>
 								<div className='input-field'>
-									<input placeholder='Enter email' id='email' type='text' onChange={(e) => inputEventHandler(e, actions.setEmail(e.target.value))}/>
+									<input id='email' type='text' onChange={(e) => inputEventHandler(e, actions.setEmail(e.target.value))}/>
 									<label htmlFor='email'>Email</label>
 								</div>
 								<div className='input-field'>
-									<input placeholder='Enter password' id='password' type='password' onChange={(e) => inputEventHandler(e, actions.setPassword(e.target.value))}/>
+									<input id='password' type='password' onChange={(e) => inputEventHandler(e, actions.setPassword(e.target.value))}/>
 									<label htmlFor='password'>Password</label>
 								</div>
 							</div>

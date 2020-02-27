@@ -1,14 +1,8 @@
-input::placeholder {
-  color: white;
-}
 
 input + label{
   color: yellow; /* Цвет текста */
 }
 
-input{
-  color: white;
-}
 
 input:focus + label{
   color: yellow!important;
@@ -16,4 +10,8 @@ input:focus + label{
 input:focus{
   border-bottom: 1px solid yellow!important;
   box-shadow: 0 1px 0 0 yellow!important;
+}
+
+.input-field label {
+  color: black;
 }
