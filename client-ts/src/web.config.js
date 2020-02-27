@@ -7,7 +7,7 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     path: __dirname, // Folder to store generated bundle
-    filename: 'bundle.js',  // Name of generated bundle after build
+    filename: '../../server-ts/src/static/bundle.js',  // Name of generated bundle after build
     publicPath: '/' // public URL of the output directory when referenced in a browser
   },
   resolve: {

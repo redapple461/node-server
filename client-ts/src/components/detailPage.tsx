@@ -9,7 +9,7 @@ export const Details: React.SFC<DetailPageProps> = (props) => {
 			<strong> Name: {props.name} </strong><br/>
 			<strong> Universe: {props.universe} </strong>
 			<br/>
-			<strong> Skills : <ul style={{color: 'red'}}>{props.skills.map(skill => { return(<div key='a'> {skill} </div>); })}</ul></strong>
+			<strong> Skills : <ul style={{color: 'red'}}>{props.skills.map(skill => { return(<div key={skill.length}> {skill} </div>); })}</ul></strong>
 		</>
 	);
 };

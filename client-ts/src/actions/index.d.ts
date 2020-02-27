@@ -20,3 +20,14 @@ export declare function removeSkill(skillToRemove: string): HeroActionsType;
 export declare function clearAddHero(): {
     type: string;
 };
+export declare function setEmail(email: string): HeroActionsType;
+export declare function setPassword(password: string): HeroActionsType;
+export declare function setRegEmail(regEmail: string): HeroActionsType;
+export declare function setRegPassword(regPassword: string): HeroActionsType;
+export declare function setUserId(userId: string): HeroActionsType;
+export declare function setJWT(jwt: string): HeroActionsType;
+export declare function logout(): HeroActionsType;
+export declare function setUserName(userName: string): HeroActionsType;
+export declare function setUserSurname(surname: string): HeroActionsType;
+export declare function setUserPhone(phone: string): HeroActionsType;
+export declare function clearRegData(): HeroActionsType;

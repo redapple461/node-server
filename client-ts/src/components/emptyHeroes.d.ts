@@ -1,2 +1,2 @@
 /// <reference types="react" />
-export declare const EmptyHeroes: () => JSX.Element;
+export declare const EmptyHeroes: (props: any) => JSX.Element;

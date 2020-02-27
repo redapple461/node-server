@@ -1,2 +1,2 @@
 /// <reference types="react" />
-export declare const useRoutes: () => JSX.Element;
+export declare const useRoutes: (isAuth: boolean) => JSX.Element;
