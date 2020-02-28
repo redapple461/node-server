@@ -23,12 +23,12 @@ const skills = new Schema({
 
 const user = new Schema({
   email: {type: String, required: true, unique: true},
-  phone: {type: String, required: true,},
-  name: {type: String, required: true,},
-  surname: {type: String, required: true,},
-  password: {type: String, required: true,}
+  phone: {type: String, required: true},
+  name: {type: String, required: true},
+  surname: {type: String, required: true},
+  password: {type: String, required: true}
 
-})
+});
 
 const db = mongo.connect(connectUrl, (err: Error, res: mongo.Response) => {
     console.log('Connect to ' + db + res);

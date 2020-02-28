@@ -12,29 +12,28 @@ export const useRoutes = (isAuth: boolean) => {
 	if (isAuth) {
 		return (
 			<Switch>
-				<Route path='/main' component={MainPage}/>
+				<Route path='/main' component={MainPage} />
 				<Route path='/heroes' component={HeroList} />
 				<Route path='/notFound'>
 					<NotFound/>
 				</Route>
-				<Route path='/detailHero/:name' component={HeroDetailPage}/>
-				<Route path='/'>
+				<Route path='/detailHero/:name' component={HeroDetailPage} />
+				<Route path='/userProfile' component={UserProfile} />
+				<Route path=''>
 					<Redirect to='/main' />
 				</Route>
-				<Route path='/userProfile' component={UserProfile} />
 				<Redirect to='/notFound' />
 			</Switch>
 		);
+	} else {
+		return (
+			<Switch>
+				<Route path='/login' component={AuthPage} />
+				<Route path='/register' component={RegisterPage} />
+				<Route path='/'>
+					<Redirect to='/login' />
+				</Route>
+			</Switch>
+		);
 	}
-	return (
-		<Switch>
-			<Route path='/' exact>
-				<AuthPage />
-			</Route>
-		<Route path='/register' exact>
-			<RegisterPage />
-		</Route>
-			<Redirect to='/' />
-		</Switch>
-	);
 };

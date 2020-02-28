@@ -91,4 +91,15 @@ export const change = (id: string, token: string, user: User) => {
 			Authorization: token
 		}
 	});
-}
+};
+
+export const updateUser = (id: string, token: string, user: User) => {
+	return fetch(`http://localhost:4000/user/updateUser/${id}`, {
+		method: 'PUT',
+		body: JSON.stringify(user),
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: token
+		}
+	}).then(res => res.json());
+};

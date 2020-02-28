@@ -44,12 +44,15 @@ export const MainPage = () => {
 	const logout = () => {
 		dispatch(actions.logout());
 		localStorage.removeItem('user_data');
-	}
+	};
 	return(
 		<>
 			<div>
 				<h1> Tours of heroes</h1>
 				<Button className='waves-effect waves-light btn rightbtn' text='Logout' onClick={() => logout()}/>
+				<Link to={{pathname: '/userProfile'}}>
+					<Button  className='waves-effect waves-light btn rightbtn' text='Profile'/>
+				</Link>
 			</div>
 			<div>
 				<Link to={{pathname: '/heroes'}}>

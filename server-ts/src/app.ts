@@ -6,16 +6,17 @@ import HeroController from './routes/app.routes';
 import SkillController from './routes/skill.routes';
 import API from './routes/api.routes';
 import AuthController from './routes/auth.router';
+import UserController from './routes/user.routes';
 
 class App {
   private app: express.Application;
   private port: number;
 
-  constructor (HeroController: HeroController, SkillController: SkillController, API: API, AuthController: AuthController) {
+  constructor (HeroController: HeroController, SkillController: SkillController, UserController: UserController,  API: API, AuthController: AuthController) {
     this.app = express();
     this.port = config.get('port');
     this.initMidleware();
-    this.initControllers(HeroController, SkillController, API, AuthController);
+    this.initControllers(HeroController, SkillController, UserController, API, AuthController);
   }
 
   private initMidleware () {
@@ -27,11 +28,12 @@ class App {
     this.app.use(express.static('./src/static'));
   }
 
-  private initControllers (HeroController: HeroController, SkillController: SkillController, API: API, AuthController: AuthController) {
+  private initControllers (HeroController: HeroController, SkillController: SkillController, UserController: UserController,API: API, AuthController: AuthController) {
       this.app.use('', HeroController.router);
       this.app.use('/skills', SkillController.router);
       this.app.use('^/$', API.router);
       this.app.use('/auth', AuthController.router);
+      this.app.use('/user', UserController.router);
   }
 
   public getServer () {
