@@ -9,6 +9,7 @@ import { Button } from '../components/button';
 import { getByName } from '../http/httpHook';
 import { HeroStore } from '../interfaces/iStore/HeroStore';
 import { updateHero } from '../http/httpHook';
+import { Link } from 'react-router-dom';
 
 export const HeroDetailPage = (props: any) => {
 	const token = useSelector((state: HeroStore) => state.jwt);
@@ -54,6 +55,9 @@ export const HeroDetailPage = (props: any) => {
 	return(
 		<>
 				<Button className='waves-effect waves-light btn rightbtn' text='Logout' onClick={() => logout()}/>
+        <Link to={{pathname: '/userProfile'}}>
+					<Button  className='waves-effect waves-light btn rightbtn' text='Profile'/>
+				</Link>
 				<Details name={detailHero.name} id={detailHero.id} universe={detailHero.universe} skills={detailHero.skills}/>
 				<div className='form'>
 					<p> Type new name of hero and choose his universe</p>
