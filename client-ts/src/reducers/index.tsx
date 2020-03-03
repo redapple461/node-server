@@ -20,7 +20,9 @@ const init: HeroStore = {
 	userName: '',
 	surname: '',
 	phone: '',
-	user: null
+	user: null,
+	redirect: false,
+	responseMessage: ''
 };
 
 export default function reducer (state = init, action?: HeroActionsType): HeroStore {
@@ -211,6 +213,16 @@ export default function reducer (state = init, action?: HeroActionsType): HeroSt
 				...state,
 				user: {...state.user, password: action.newPassword}
 			};
+		case actions.REDIRECT_TO_RESPONSE:
+			return{
+				...state,
+				redirect: !state.redirect
+			};
+		case actions.SET_RESPONSE_MESSAGE:
+			return{
+				...state,
+				responseMessage: action.responseMessage
+			}
 		default:
 			return state;
 	}

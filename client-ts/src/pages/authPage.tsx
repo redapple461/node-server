@@ -8,7 +8,7 @@ import { HeroStore } from '../interfaces/iStore/HeroStore';
 import { Link } from 'react-router-dom';
 import * as http from '../http/httpHook';
 
-export const AuthPage = () => {
+export  const AuthPage = () => {
 	const email = useSelector((state: HeroStore) => state.email);
 	const password = useSelector((state: HeroStore) => state.password);
 	const storageName = 'user_data';
@@ -21,7 +21,7 @@ export const AuthPage = () => {
 		if (data && data.token) {
 			dispatch(actions.setJWT(data.token));
 			dispatch(actions.setUser(data.user));
-		};
+		}
 	});
 
 	const inputEventHandler = (e: React.ChangeEvent<HTMLInputElement>, action: HeroActionsType) => {
@@ -39,6 +39,9 @@ export const AuthPage = () => {
 				return res.errors.errors.forEach(error => {
 					window.M.toast({html: error.msg});
 				});
+		}
+			if (res.error){
+				return window.M.toast({html: res.error});
 			}
 			window.M.toast({html: `Hello ${res.user.name}`});
 			localStorage.setItem(storageName, JSON.stringify({
@@ -64,6 +67,7 @@ export const AuthPage = () => {
 								<div className='input-field'>
 									<input id='password' type='password' onChange={(e) => inputEventHandler(e, actions.setPassword(e.target.value))}/>
 									<label htmlFor='password'>Password</label>
+									<Link style={{fontSize: '13px'}}to={{pathname: '/passwordReset'}} > Forgor password ?</Link>
 								</div>
 							</div>
 							<div className='card-action'>

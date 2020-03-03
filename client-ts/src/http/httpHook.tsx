@@ -82,7 +82,7 @@ export const register =(email: string, password: string, name: string, surname: 
 	}).then(res => res.json());
 };
 
-export const change = (id: string, token: string, user: User) => {
+export const getUser = (id: string, token: string, user: User) => {
 	return fetch(`http://localhost:4000/user/getUser/:${id}`, {
 		method: 'GET',
 		body: JSON.stringify(user),
@@ -97,6 +97,28 @@ export const updateUser = (id: string, token: string, user: User) => {
 	return fetch(`http://localhost:4000/user/updateUser/${id}`, {
 		method: 'PUT',
 		body: JSON.stringify(user),
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: token
+		}
+	}).then(res => res.json());
+};
+
+export const sendEmail = (email: string) => {
+	console.log(email);
+	return fetch(`http://localhost:4000/auth/forgot`, {
+		method: 'POST',
+		body: JSON.stringify({email}),
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	}).then(res => res.json());
+};
+
+export const changePassword = (password: string, token: string) => {
+	return fetch(`http://localhost:4000/auth/resetPassword`, {
+		method: 'POST',
+		body: JSON.stringify({password}),
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: token

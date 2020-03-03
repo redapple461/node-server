@@ -237,3 +237,16 @@ export function updateUserPassword (newPassword: string): HeroActionsType {
 		newPassword
 	};
 }
+
+export function redirectToResponse (): HeroActionsType {
+	return {
+		type: actions.REDIRECT_TO_RESPONSE
+	}
+}
+
+export function setResponseMessage (responseMessage: string): HeroActionsType {
+	return {
+		type: actions.SET_RESPONSE_MESSAGE,
+		responseMessage
+	}
+}

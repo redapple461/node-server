@@ -8,7 +8,6 @@ import { HeroStore } from './interfaces/iStore/HeroStore';
 
 function App () {
 	const jwt = useSelector((state: HeroStore) => state.jwt);
-	console.log(!!jwt);
 	const routes = useRoutes(!!jwt);
 	return (
 	<Router>

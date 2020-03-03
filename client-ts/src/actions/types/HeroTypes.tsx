@@ -166,6 +166,16 @@ interface UpdateUserPhone {
 	newPhone: string;
 }
 
+interface RedirectToResponse{
+	type: typeof actions.REDIRECT_TO_RESPONSE;
+}
+
+interface SetResponseMessage{
+	type: typeof actions.SET_RESPONSE_MESSAGE;
+	responseMessage: string;
+}
+
 export type HeroActionsType = SetMarvel | SetDC | SetBoth | GetData | AddHero | DeleteHero | LoadComplete | InitDetailHero | UpdateName | UpdateUniverse | UpdateAddHeroName |
 	UpdateAddHeroUniverse | UpdateHero | ClearDetailHero | IsLoad | AddSkill | RemoveSkill | ClearAddHero | SetEmail | SetPassword | SetRegEmail | SetRegPassword | SetUserId |
-	SetJWT | Logout | SetUserName | SetUserPhone| SetUserSurname | ClearRegData | SetUser | UpdateUserEmail | UpdateUserName | UpdateUserSurname | UpdateUserPassword | UpdateUserPhone;
+	SetJWT | Logout | SetUserName | SetUserPhone| SetUserSurname | ClearRegData | SetUser | UpdateUserEmail | UpdateUserName | UpdateUserSurname | UpdateUserPassword | UpdateUserPhone |
+	RedirectToResponse | SetResponseMessage;

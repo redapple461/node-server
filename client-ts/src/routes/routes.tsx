@@ -7,6 +7,9 @@ import { HeroDetailPage } from '../pages/heroDetailPage';
 import { AuthPage } from '../pages/authPage';
 import { RegisterPage } from '../pages/registerPage';
 import { UserProfile } from '../pages/userProfile';
+import { PassworeResetPage } from '../pages/passwordReset';
+import { ResponsePage } from '../pages/responsePage';
+import { ConfirmPage } from '../pages/confirmPage';
 
 export const useRoutes = (isAuth: boolean) => {
 	if (isAuth) {
@@ -30,6 +33,9 @@ export const useRoutes = (isAuth: boolean) => {
 			<Switch>
 				<Route path='/login' component={AuthPage} />
 				<Route path='/register' component={RegisterPage} />
+				<Route path='/passwordReset' component={PassworeResetPage} />
+				<Route path='/response' component={ResponsePage} />
+				<Route path='/resetPassword/:token' component={ConfirmPage} />
 				<Route path='/'>
 					<Redirect to='/login' />
 				</Route>

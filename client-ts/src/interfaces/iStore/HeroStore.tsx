@@ -19,4 +19,6 @@ export interface HeroStore {
 	surname: string;
 	phone: string;
 	user: User;
+	redirect: boolean;
+	responseMessage: string;
 }
