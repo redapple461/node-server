@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">95.65% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>22/23</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">95.65% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>22/23</span>
             </div>
         
             
@@ -101,7 +101,14 @@
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -113,6 +120,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -125,9 +135,13 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -138,7 +152,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,16 +165,19 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import HeroController from './routes/app.routes';
 import SkillController from './routes/skill.routes';
+import API from './routes/api.routes';
+import AuthController from './routes/auth.router';
+import UserController from './routes/user.routes';
 &nbsp;
 class App {
   private app: express.Application;
   private port: number;
 &nbsp;
-  constructor (HeroController: HeroController, SkillController: SkillController) {
+  constructor (HeroController: HeroController, SkillController: SkillController, UserController: UserController,  API: API, AuthController: AuthController) {
     this.app = express();
     this.port = config.get('port');
     this.initMidleware();
-    this.initControllers(HeroController, SkillController);
+    this.initControllers(HeroController, SkillController, UserController, API, AuthController);
   }
 &nbsp;
   private initMidleware () {
@@ -169,11 +186,15 @@ class App {
     this.app.use(bodyParser.json({limit: '5mb'}));
     this.app.use(bodyParser.urlencoded({extended: true}));
     this.app.use(bodyParser.json());
+    this.app.use(express.static('./src/static'));
   }
 &nbsp;
-  private initControllers (HeroController: HeroController, SkillController: SkillController) {
+  private initControllers (HeroController: HeroController, SkillController: SkillController, UserController: UserController,API: API, AuthController: AuthController) {
       this.app.use('', HeroController.router);
       this.app.use('/skills', SkillController.router);
+      this.app.use('^/$', API.router);
+      this.app.use('/auth', AuthController.router);
+      this.app.use('/user', UserController.router);
   }
 &nbsp;
   public getServer () {
@@ -181,8 +202,8 @@ class App {
   }
 &nbsp;
   public listen () {
-    this.app.listen(this.port, () =&gt; {
-        console.log(`App listening on the port ${this.port}`);
+    this.app.listen(this.port, <span class="fstat-no" title="function not covered" >() =</span>&gt; {
+<span class="cstat-no" title="statement not covered" >        console.log(`App listening on the port ${this.port}`);</span>
     });
   }
 }
@@ -196,7 +217,7 @@ export default App;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Feb 18 2020 14:06:56 GMT+0300 (Moscow Standard Time)
+                at Wed Mar 04 2020 12:55:57 GMT+0300 (Moscow Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

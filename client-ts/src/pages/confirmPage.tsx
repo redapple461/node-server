@@ -2,11 +2,16 @@ import React from 'react';
 import { Button } from '../components/button';
 import { changePassword } from '../http/httpHook';
 import bcrytp from 'bcryptjs';
+import { useDispatch, useSelector } from 'react-redux';
+import { redirectToResponse } from '../actions';
+import { HeroStore } from '../interfaces/iStore/HeroStore';
+import { Redirect } from 'react-router-dom';
 
 export const ConfirmPage = (props) => {
 	let firstPassword: string = '';
 	let confirmPassword: string = '';
-
+	const dispatch = useDispatch();
+	const fireRedirect = useSelector( (store: HeroStore) => store.redirect);
 	const change = () => {
 		if (firstPassword === '' || confirmPassword === '') {
 			return alert('Missed password');
@@ -22,7 +27,9 @@ export const ConfirmPage = (props) => {
 					if (res.error) {
 						window.M.toast({html: res.error});
 					} else {
-						window.M.toast({html: 'Password changed'});					}
+						window.M.toast({html: 'Password changed'});
+						dispatch(redirectToResponse());
+					}
 				})
 			);
 		}
@@ -38,11 +45,11 @@ export const ConfirmPage = (props) => {
 						</div>
 						<div className='card-content'>
 							<div className='input-field'>
-								<input id='first-password' type='text' onChange={(e) => firstPassword = e.target.value}/>
+								<input id='first-password' type='password' onChange={(e) => firstPassword = e.target.value}/>
 								<label htmlFor='first-password'>Type new password</label>
 							</div>
 							<div className='input-field'>
-								<input id='second-password' type='text' onChange={(e) => confirmPassword = e.target.value}/>
+								<input id='second-password' type='password' onChange={(e) => confirmPassword = e.target.value}/>
 								<label htmlFor='second-password'>Confrim password</label>
 							</div>
 						</div>
@@ -51,6 +58,9 @@ export const ConfirmPage = (props) => {
 						</div>
 					</div>
 				</div>
+				{fireRedirect && (
+					<Redirect to={{pathname: '/'}}/>
+				)}
 			</div>
 		</>
 	);

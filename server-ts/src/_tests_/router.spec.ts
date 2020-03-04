@@ -3,10 +3,13 @@ import HeroController from '../routes/app.routes';
 import SkillController from '../routes/skill.routes';
 import request from 'supertest';
 import { response } from 'express';
+import UserController from '../routes/user.routes';
+import API from '../routes/api.routes';
+import AuthController from '../routes/auth.router';
 
 
 describe('Test  hero controller', () => {
-		const app = new App(new HeroController(), new SkillController());
+		const app = new App(new HeroController(), new SkillController(), new UserController() , new API(), new AuthController());
 		app.listen();
 
 		it('It should response the GET method', (done) => {

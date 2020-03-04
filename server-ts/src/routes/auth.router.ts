@@ -132,7 +132,8 @@ class AuthController {
 				{ userId: userData._id },
 				config.get('jwtSecret')
       );
-      const url = `http://localhost:3000/resetPassword/${token}`;
+      const urlReact = `http://localhost:3000/resetPassword/${token}`;
+      const urlAngular = `http://localhost:4200/resetPassword/${token}`
 			const data = {
 				to: userData.email,
 				from: email,
@@ -142,7 +143,7 @@ class AuthController {
         </head>
         <body>
           <h3> Dear ${userData.name} </h3>
-          <p> You Request for a password reset, follow this <a href="${url}">link</a> to reset your password
+          <p> You Request for a password reset, follow this <a href="${urlReact}">link for React app</a>  or this <a href="${urlAngular}"> link for Angular app</a>to reset your password
         </body>
         `,
 				subject: 'Password help has arrived!'
