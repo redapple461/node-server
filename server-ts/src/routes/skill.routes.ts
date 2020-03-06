@@ -1,6 +1,4 @@
 import * as express from 'express';
-import { Schema } from 'mongoose';
-import { HeroInterface } from '../models/hero.model';
 import { skillsModel } from '../models/schema';
 import { auth } from '../midleware/auth.midleware';
 

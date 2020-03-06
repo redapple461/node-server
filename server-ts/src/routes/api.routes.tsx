@@ -1,7 +1,5 @@
 import * as express from 'express';
 import React from 'react';
-import ReactDOMServer, { renderToString } from 'react-dom/server';
-import App from '../../../client-ts/src/App';
 import reducer from '../../../client-ts/src/reducers';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';

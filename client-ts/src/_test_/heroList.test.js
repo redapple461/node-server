@@ -97,8 +97,10 @@ describe('<HeroList/> test', () => {
     });
 
     it('should work at click btn', done => {
+        console.log('123123123')
+        console.log(container.toJSON());
         renderer.act(() => {
-            container.toJSON().children[4].props.onClick();
+            container.toJSON()[4].children.props.onClick();
         });
         expect(jest.fn()).toHaveBeenCalledTimes(0);
         done();

@@ -4,8 +4,6 @@ import { HeroInterface } from '../models/hero.model';
 import { universeModel, heroModel, skillsModel } from '../models/schema';
 import { UniverseInterface } from '../models/universe.model';
 import { SkillInterface } from '../models/skill.model';
-import jwt from 'jsonwebtoken';
-import config from 'config';
 import {auth} from '../midleware/auth.midleware';
 
 class HeroController {
@@ -54,7 +52,7 @@ class HeroController {
         }
         const hero: HeroInterface = req.body;
         if (hero.universe === undefined) {
-            hero.universe = '';
+            hero.universe = 'Marvel';
         }
         console.log('hero to post: ' + hero);
         this.model.countDocuments({}, (err: Error, c: number) => {
@@ -64,29 +62,32 @@ class HeroController {
             this.model.exists({name: hero.name}, (searchErr: any, searchRes: boolean) => {
                 // if(searchErr) console.log(err)
                 if (!searchRes) {
-                    universeModel.findOne({universe: hero.universe}, (error: Error, searchId: UniverseInterface) => {
-						const heroSkills = req.body.skills;
-						const heroId = new mongo.Types.ObjectId();
-						const skillsId = new mongo.Types.ObjectId();
-						skillsModel.create({_id: skillsId, hero_id: heroId, skills: heroSkills}, (err, std) => {
-							this.model.create({_id: heroId, id: hero.id, name: hero.name, universe: searchId._id, skills: skillsId }, (er, re) => {
-								return res.send(hero);
-							});
-						});
+                  universeModel.findOne({universe: hero.universe}, (error: Error, searchId: UniverseInterface) => {
+                    if(error) console.log(error)
+                    const heroSkills = req.body.skills;
+                    const heroId = new mongo.Types.ObjectId();
+                    const skillsId = new mongo.Types.ObjectId();
+                    skillsModel.create({_id: skillsId, hero_id: heroId, skills: heroSkills}, (err, std) => {
+                      if(err) console.log(err)
+                      this.model.create({_id: heroId, id: hero.id, name: hero.name, universe: searchId._id, skills: skillsId }, (er, re) => {
+                        if(er) console.log(er)
+                      return res.send(hero);
+                      });
                     });
+                  });
                 } else {
-                    res.send({message: `Hero with name ${hero.name} already exists`});
+                  res.send({message: `Hero with name ${hero.name} already exists`});
                 }
-            });
-        });
+              });
+          });
     }
 
     private getHero = (req: express.Request, res: express.Response) => {
         const searchName: string  = req.params.name;
         console.log(`Get hero ${searchName}`);
         this.model.findOne({name: searchName}, (err: any, data: HeroInterface) => {
-            universeModel.findOne({_id: data.universe}, (err: Error, universeData: UniverseInterface) => {
-              skillsModel.findOne({hero_id: data._id}, (err: Error, skillData: SkillInterface) => {
+            universeModel.findOne({_id: data.universe}, (_err: Error, universeData: UniverseInterface) => {
+              skillsModel.findOne({hero_id: data._id}, (error: Error, skillData: SkillInterface) => {
 				res.send({id: data.id, name: data.name, universe: universeData.universe, skills: skillData.skills});
 			  });
             });
@@ -120,11 +121,13 @@ class HeroController {
         const deleteName: string = req.params.name;
         console.log(`Hero to delete ${deleteName}`);
         this.model.findOne({name: deleteName}, (err: Error, data: HeroInterface) => {
-			this.model.deleteOne({_id: data._id}, (err) => {
-				skillsModel.deleteOne({hero_id: data._id}, err => {
-					res.send({message: `Hero ${deleteName} was deleted`});
-				});
-			});
+          if(data == null) return console.log('no data for delete '+req.params.name);
+          console.log(data);
+			    this.model.deleteOne({_id: data._id}, (err) => {
+				    skillsModel.deleteOne({hero_id: data._id}, err => {
+				    	res.send({message: `Hero ${deleteName} was deleted`});
+				   });
+		    	});
         });
     }
 }
