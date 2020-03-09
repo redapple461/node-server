@@ -93,7 +93,7 @@ const HeroList = (props: any) => {
 		<>
 			<h1> Heroes List</h1>
 			<Button className='waves-effect waves-light btn rightbtn' text='Logout' onClick={() => logout()}/>
-      <Link to={{pathname: '/userProfile'}}>
+			<Link to={{pathname: '/userProfile'}}>
 					<Button  className='waves-effect waves-light btn rightbtn' text='Profile'/>
 				</Link>
 			<Link to='/main'> <Button className='waves-effect waves-light btn' text='Dashboard'/></Link>

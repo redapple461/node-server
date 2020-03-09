@@ -55,7 +55,7 @@ export const HeroDetailPage = (props: any) => {
 	return(
 		<>
 				<Button className='waves-effect waves-light btn rightbtn' text='Logout' onClick={() => logout()}/>
-        <Link to={{pathname: '/userProfile'}}>
+				<Link to={{pathname: '/userProfile'}}>
 					<Button  className='waves-effect waves-light btn rightbtn' text='Profile'/>
 				</Link>
 				<Details name={detailHero.name} id={detailHero.id} universe={detailHero.universe} skills={detailHero.skills}/>
@@ -93,7 +93,10 @@ export const HeroDetailPage = (props: any) => {
 				<Button
 					className='waves-effect waves-light btn'
 					type='button'
-					onClick={() => { updateHero(oldname, detailHero, token).then(() => dispatch(actions.updateHero()))} }
+					onClick={() => { updateHero(oldname, detailHero, token).then((res) => {
+						window.M.toast({html: res.message});
+						dispatch(actions.updateHero());
+					})} }
 					text='Save'
 				/>
 			</>

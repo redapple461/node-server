@@ -5,26 +5,36 @@ import { universeModel, heroModel, skillsModel } from '../models/schema';
 import { UniverseInterface } from '../models/universe.model';
 import { SkillInterface } from '../models/skill.model';
 import {auth} from '../midleware/auth.midleware';
+import UniverseController from './universe.routes';
+import SkillController from './skill.routes';
+import { heroValid } from '../midleware/heroValidate.midleware';
 
+
+
+// tslint:disable: align
 class HeroController {
     public router: express.Router = express.Router();
     private model: Schema = heroModel;
 
-    constructor () {
+    constructor (public universeController: UniverseController, public skillController: SkillController) {
         this.initRoutes();
     }
 
     public initRoutes () {
         this.router.get('/getHeroes', auth, this.sendHeroes);
-        this.router.post('/addHero', auth, this.addHero);
-        this.router.get('/getHero/:name', auth, this.getHero);
-        this.router.delete('/deleteHero/:name', auth, this.deleteHero);
-        this.router.put('/updateHero/:oldName', auth, this.updateHero);
+        this.router.post('/addHero', auth, heroValid, this.universeController.findUniverseByName, this.skillController.addSkill, this.addHero);
+        this.router.get('/getHero/:name', auth, this.getHero , this.universeController.findUniverseById, this.skillController.getSkillById, this.sendHero);
+        this.router.delete('/deleteHero/:name', auth, this.deleteHero, this.skillController.deleteSkill);
+		this.router.put('/updateHero/:oldName', auth, this.getHero, this.skillController.getSkillById, this.skillController.updateSkillsArray,
+														 this.universeController.findUniverseByName, this.updateHero);
     }
 
 
-	   public async getAllHeroes (callback) {
+	public async getAllHeroes (callback) {
 		return this.model.find({}, (err: Error, data: HeroInterface[]) => {
+			if (err) {
+				console.log(err);
+			}
 			const _heroes = [];
 			for (const hero of data) {
 			  universeModel.findOne({_id: hero.universe}, (err: Error, universeData: UniverseInterface) => {
@@ -46,14 +56,7 @@ class HeroController {
 	}
 
     private addHero = (req: express.Request, res: express.Response) => {
-        console.log(req.body);
-        if (req.body.name === undefined) {
-            return res.status(400).send({error: 'name is undefined'});
-        }
         const hero: HeroInterface = req.body;
-        if (hero.universe === undefined) {
-            hero.universe = 'Marvel';
-        }
         console.log('hero to post: ' + hero);
         this.model.countDocuments({}, (err: Error, c: number) => {
             console.log('Count is : ' + c);
@@ -62,19 +65,10 @@ class HeroController {
             this.model.exists({name: hero.name}, (searchErr: any, searchRes: boolean) => {
                 // if(searchErr) console.log(err)
                 if (!searchRes) {
-                  universeModel.findOne({universe: hero.universe}, (error: Error, searchId: UniverseInterface) => {
-                    if(error) console.log(error)
-                    const heroSkills = req.body.skills;
-                    const heroId = new mongo.Types.ObjectId();
-                    const skillsId = new mongo.Types.ObjectId();
-                    skillsModel.create({_id: skillsId, hero_id: heroId, skills: heroSkills}, (err, std) => {
-                      if(err) console.log(err)
-                      this.model.create({_id: heroId, id: hero.id, name: hero.name, universe: searchId._id, skills: skillsId }, (er, re) => {
-                        if(er) console.log(er)
-                      return res.send(hero);
-                      });
-                    });
-                  });
+                  this.model.create({_id: req.body.heroId, id: hero.id, name: hero.name, universe: req.body.universeId, skills: req.body.skillId}, (err, data) => {
+						if (err) {console.log(err);}
+						res.send(hero);
+				  });
                 } else {
                   res.send({message: `Hero with name ${hero.name} already exists`});
                 }
@@ -82,52 +76,57 @@ class HeroController {
           });
     }
 
-    private getHero = (req: express.Request, res: express.Response) => {
-        const searchName: string  = req.params.name;
+    private getHero = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        const searchName: string  = req.params.name ? req.params.name : req.params.oldName;
         console.log(`Get hero ${searchName}`);
         this.model.findOne({name: searchName}, (err: any, data: HeroInterface) => {
-            universeModel.findOne({_id: data.universe}, (_err: Error, universeData: UniverseInterface) => {
-              skillsModel.findOne({hero_id: data._id}, (error: Error, skillData: SkillInterface) => {
-				res.send({id: data.id, name: data.name, universe: universeData.universe, skills: skillData.skills});
-			  });
-            });
+			console.log(searchName);
+			req.body.hero = data;
+			next();
         });
-    }
+	}
+
+
+
+	// tslint:disable-next-line: align
+	private sendHero = (req: express.Request, res: express.Response) => {
+		/*
+			req.body.skills - skill data
+			req.body.universe - universe data
+			req.body.hero - hero data (with ids of skill and universe);
+		*/
+		const hero = req.body.hero;
+		const skills = req.body.skillsData.skills;
+		const universe = req.body.universe.universe;
+		const heroToSend = {id: hero.id, name: hero.name, universe, skills};
+		res.send(heroToSend);
+	}
 
     private updateHero = (req: express.Request, res: express.Response) => {
         if (req.body.name === undefined) {
             return res.status(400).send({error: 'Name is undefined'});
         }
         const oldName: string = req.params.oldName;
-        const hero: HeroInterface = req.body;
-        console.log(`Old name ${oldName} will update with values ${hero.name}: ${hero.universe}`);
-        this.model.findOne({name: oldName}, (err, some) => {
-			universeModel.findOne({universe: hero.universe}, (err: Error, _res: UniverseInterface) => {
-				skillsModel.findOne({hero_id: some._id}, (err: Error, skillsData: SkillInterface) => {
-				  skillsModel.updateOne({_id: skillsData._id}, {$set: {skills: req.body.skills}}, (err, otv) => {
-					const qHero = {name: hero.name, universe: _res._id, skills: skillsData._id};
-					const query = {$set: qHero};
-					this.model.updateOne({name: oldName}, query, () => {
-					  // if (err) {return res.send(err); }
-					  res.send({message: `Hero ${oldName} was update - ${hero.name}: ${hero.universe}`});
-				   });
-				  });
-				});
-			  });
-		});
+        const hero: HeroInterface = {id: req.body.id, name: req.body.name, universe: req.body.universeId, skills: req.body.hero.skills};
+        this.model.updateOne({_id: req.body.hero._id}, hero, (err,data) => {
+			if (err) {
+				console.log(err);
+				res.status(400).send({message: 'Some error while update hero', erro: err.message});
+			}
+			res.send({message: `Hero ${oldName} was updated to ${hero.name}`});
+		})
     }
 
-    private deleteHero = (req: express.Request, res: express.Response) => {
+    private deleteHero = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const deleteName: string = req.params.name;
         console.log(`Hero to delete ${deleteName}`);
         this.model.findOne({name: deleteName}, (err: Error, data: HeroInterface) => {
-          if(data == null) return console.log('no data for delete '+req.params.name);
-          console.log(data);
-			    this.model.deleteOne({_id: data._id}, (err) => {
-				    skillsModel.deleteOne({hero_id: data._id}, err => {
-				    	res.send({message: `Hero ${deleteName} was deleted`});
-				   });
-		    	});
+			if (data === null) { return console.log('no data for delete ' + req.params.name); }
+			console.log(data);
+			this.model.deleteOne({_id: data._id}, (err) => {
+				req.body.skillId = data._id;
+				next();
+			});
         });
     }
 }

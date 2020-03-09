@@ -56,7 +56,7 @@ export default function reducer (state = init, action?: HeroActionsType): HeroSt
 		case actions.HEROES_LOADED:
 			return{
 				...state,
-				noHeroes: false
+				noHeroes: !state.noHeroes
 			};
 		case actions.ADD_HERO:
 			return{

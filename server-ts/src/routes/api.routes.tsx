@@ -4,15 +4,20 @@ import reducer from '../../../client-ts/src/reducers';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import HeroController from '../routes/app.routes';
+import {renderToString} from 'react-dom/server';
+import UniverseController from './universe.routes';
+import SkillController from './skill.routes';
 
-
+  // tslint:disable: align
 class API {
 	public router: express.Router = express.Router();
-	private heroController: HeroController;
+  private heroController: HeroController;
+  public skillController = new SkillController();
+  public universeController = new UniverseController();
     // tslint:disable-next-line: align
     constructor () {
 		this.initRoutes();
-		this.heroController = new HeroController();
+		this.heroController = new HeroController(this.universeController, this.skillController);
     }
 
     // tslint:disable-next-line: align

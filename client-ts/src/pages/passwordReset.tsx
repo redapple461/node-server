@@ -15,8 +15,9 @@ export const PassworeResetPage = () => {
 		btn.setAttribute('disabled', 'true');
 		alert(email);
 		sendEmail(email).then(res => {
-			if (res.err){
-				dispatch(setResponseMessage(res.err));
+			// console.log(res);
+			if (res.error){
+				dispatch(setResponseMessage(res.error));
 			} else {
 				dispatch(setResponseMessage(res.message));
 			}

@@ -194,32 +194,5 @@ describe('Test  hero controller', () => {
       });
     });
 
-    it('It should return all skills', (done) => {
-      request(app.getServer()).get('/skills/getSkills').set({
-        authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTVlNWEwYjA2NzVmZDQ3YjA4NDNlNWMiLCJpYXQiOjE1ODMzMTcxMzl9.USRfyGBxF61mq7yiG5u7UxiIrYsGJbSc9bHgp8iQWrQ'
-      }).then(response => {
-        expect(response.statusCode).toBe(200);
-        done();
-      });
-    });
-
-
-    it('It should add skill', (done) => {
-      request(app.getServer()).post('/skills/addSkill').set({
-        authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTVlNWEwYjA2NzVmZDQ3YjA4NDNlNWMiLCJpYXQiOjE1ODMzMTcxMzl9.USRfyGBxF61mq7yiG5u7UxiIrYsGJbSc9bHgp8iQWrQ'
-      }).send({skill: 'Tesing'}).then(response => {
-        expect(response.statusCode).toBe(200);
-        done();
-      });
-    });
-
-    it('It should return all skills', (done) => {
-      request(app.getServer()).get('/skills/getSkills').set({
-        authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTVlNWEwYjA2NzVmZDQ3YjA4NDNlNWMiLCJpYXQiOjE1ODMzMTcxMzl9.USRfyGBxF61mq7yiG5u7UxiIrYsGJbSc9bHgp8iQWrQ'
-      }).then(response => {
-        expect(response.statusCode).toBe(200);
-        done();
-      });
-    });
 
 });
