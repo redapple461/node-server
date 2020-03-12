@@ -12,6 +12,7 @@ export const UserProfile = () => {
 	const dispatch = useDispatch();
 	const token = useSelector((state: HeroStore) => state.jwt);
 	const tempUser: User = user;
+
 	const updateBtn = (btnId: string, inputId: string, defaultContent: string) => {
 		const btn = document.getElementById(btnId);
 		const input = document.getElementById(inputId);
@@ -25,7 +26,6 @@ export const UserProfile = () => {
 	};
 
 	const update = () => {
-		alert('work');
 		updateUser(user._id, token, tempUser).then(res => {
 			if (res.error) {
 				window.M.toast({html: res.error});

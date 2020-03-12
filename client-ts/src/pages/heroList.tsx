@@ -22,6 +22,13 @@ const HeroList = (props: any) => {
 	async function fetchData () {
 		try {
 			await getHeroes(token).then(res => {
+				if (res.message) {
+					window.M.toast({html: res.message});
+					if (res.message === 'jwt expired') {
+						return logout();
+					}
+					return;
+				}
 				res.sort((a, b) => a.id - b.id);
 				dispatch(actions.getData(res));
 			});
@@ -113,7 +120,6 @@ const HeroList = (props: any) => {
 					<RadioButton id='heal'  type='checkbox' className='with-gap' value='Heal' text='Heal'   dispatch={onCheck}/>
 				</div>
 			</div>
-
 			<Button text='Go back' className='waves-effect waves-light btn' onClick={() => props.history.goBack()}/>
 		</>
 	);

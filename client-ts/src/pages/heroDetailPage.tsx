@@ -6,9 +6,8 @@ import { NoPage } from '../components/404';
 import {  Details } from '../components/detailPage';
 import { RadioButton } from '../components/radio';
 import { Button } from '../components/button';
-import { getByName } from '../http/httpHook';
+import { getByName, updateHero } from '../http/httpHook';
 import { HeroStore } from '../interfaces/iStore/HeroStore';
-import { updateHero } from '../http/httpHook';
 import { Link } from 'react-router-dom';
 
 export const HeroDetailPage = (props: any) => {
@@ -22,7 +21,11 @@ export const HeroDetailPage = (props: any) => {
 			await getByName(props.match.params.name, token)
 			.then(res => {
 				if (res.message) {
-					return window.M.toast({html: 'No auth!!!'});
+					window.M.toast({html: res.message});
+					if (res.message === 'jwt expired') {
+						return logout();
+					}
+					return;
 				}
 				dispatch(actions.initDetailHero(res));
 		});
@@ -30,7 +33,7 @@ export const HeroDetailPage = (props: any) => {
 			// tslint:disable-next-line: no-console
 			console.log(e);
 		}
-		}
+	}
 	const goBack = () => {
 		props.history.goBack();
 	};

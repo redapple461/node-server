@@ -41,23 +41,23 @@ class UserController {
 
 	// tslint:disable-next-line: align
     public getUser = async (req: express.Request, res: express.Response , next: express.NextFunction) => {
-      try {
-        console.log(req.body);
-        const errors  = validationResult(req);
-        if (!errors.isEmpty()) {
-          return res.status(400).send({errors, message: 'Inccorect data for login'});
-        }
-        const email = req.body.email;
-        const user = await User.findOne({ email });
-        if (!user) {
-          return res.status(400).send({error: 'User with current email didnt exists'});
-        }
-        req.body.user = user;
-        next();
-      } catch (e) {
-        console.log(e);
-        return res.status(500).send({error: e.message});
-      }
+    	try {
+			console.log(req.body);
+			const errors  = validationResult(req);
+			if (!errors.isEmpty()) {
+				return res.status(400).send({errors, message: 'Inccorect data for login'});
+			}
+        	const email = req.body.email;
+			const user = await User.findOne({ email });
+			if (!user) {
+				return res.status(400).send({error: 'User with current email doesnt exists'});
+			}
+			req.body.user = user;
+			next();
+      	} catch (e) {
+			console.log(e);
+			return res.status(500).send({error: e.message});
+      	}
     }
 }
 

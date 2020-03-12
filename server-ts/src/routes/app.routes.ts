@@ -65,15 +65,17 @@ class HeroController {
             this.model.exists({name: hero.name}, (searchErr: any, searchRes: boolean) => {
                 // if(searchErr) console.log(err)
                 if (!searchRes) {
-                  this.model.create({_id: req.body.heroId, id: hero.id, name: hero.name, universe: req.body.universeId, skills: req.body.skillId}, (err, data) => {
-						if (err) {console.log(err);}
+                	this.model.create({_id: req.body.heroId, id: hero.id, name: hero.name, universe: req.body.universeId, skills: req.body.skillId}, (err, data) => {
+						if (err) {
+							console.log(err);
+						}
 						res.send(hero);
-				  });
+				  	});
                 } else {
-                  res.send({message: `Hero with name ${hero.name} already exists`});
+                	res.send({message: `Hero with name ${hero.name} already exists`});
                 }
-              });
-          });
+            });
+        });
     }
 
     private getHero = (req: express.Request, res: express.Response, next: express.NextFunction) => {

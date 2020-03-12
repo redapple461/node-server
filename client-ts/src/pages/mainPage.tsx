@@ -21,13 +21,13 @@ export const MainPage = () => {
 		return  getHeroes(token)
 		.then(res => {
 				if (res.message) {
-					return window.M.toast({html: 'No auth!!!'});
+					return window.M.toast({html: res.message});
 				}
 				res.sort((a, b) => a.id - b.id);
 				dispatch(actions.getData(res));
 			}
 		);
-		}
+	}
 
 	useEffect(() => {
 		if (isLoad) {
