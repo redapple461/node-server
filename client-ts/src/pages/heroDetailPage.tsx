@@ -6,9 +6,10 @@ import { NoPage } from '../components/404';
 import {  Details } from '../components/detailPage';
 import { RadioButton } from '../components/radio';
 import { Button } from '../components/button';
-import { getByName, updateHero } from '../http/httpHook';
+import { getByName, updateHero, updateToken } from '../http/httpHook';
 import { HeroStore } from '../interfaces/iStore/HeroStore';
 import { Link } from 'react-router-dom';
+import { refreshToken } from '../http/refreshToken.hook';
 
 export const HeroDetailPage = (props: any) => {
 	const token = useSelector((state: HeroStore) => state.jwt);
@@ -17,21 +18,35 @@ export const HeroDetailPage = (props: any) => {
 	const dispatch = useDispatch();
 	const isLoad = useSelector((state: HeroStore) => state.isLoad);
 	async function fetchData () {
+		//  JSON.parse(localStorage.getItem('userData')).refreshToken
+		const name = props.match.params.name;
 		try {
-			await getByName(props.match.params.name, token)
-			.then(res => {
+			await getByName(name, token)
+			.then(async res => {
 				if (res.message) {
 					window.M.toast({html: res.message});
 					if (res.message === 'jwt expired') {
-						return logout();
+						// alert('try to update token');
+						const refToken = JSON.parse(localStorage.getItem('user_data')).refreshToken;
+						// console.log('refresh '+refreshToken);
+						// console.log('auth '+JSON.parse(localStorage.getItem('user_data')).token);
+						return updateToken(refToken).then(async _res => {
+							// console.log(_res);
+							const newUserData = (JSON.parse(localStorage.getItem('user_data')));
+							newUserData.token = _res.token;
+							dispatch(actions.setJWT(_res.token));
+							// console.log('test '+token);
+							localStorage.setItem('user_data', JSON.stringify(newUserData));
+							window.M.toast({html: 'Token updated'});
+							// console.log('recursia');
+						});
 					}
-					return;
 				}
 				dispatch(actions.initDetailHero(res));
 		});
 		} catch (e) {
 			// tslint:disable-next-line: no-console
-			console.log(e);
+			console.log(e.message);
 		}
 	}
 	const goBack = () => {
@@ -40,8 +55,7 @@ export const HeroDetailPage = (props: any) => {
 
 	useEffect(() => {
 			if (isLoad === false) {
-				fetchData();
-				dispatch(actions.isLoad());
+				fetchData().then(() => dispatch(actions.isLoad()));
 			}
 	});
 
@@ -96,8 +110,12 @@ export const HeroDetailPage = (props: any) => {
 				<Button
 					className='waves-effect waves-light btn'
 					type='button'
-					onClick={() => { updateHero(oldname, detailHero, token).then((res) => {
+					onClick={() => { updateHero(oldname, detailHero, token).then(async (res) => {
 						window.M.toast({html: res.message});
+						if (res.message === 'jwt expired') {
+							//window.M.toast({html: 'Token expired'});
+							await refreshToken(dispatch).then(_res => updateHero(oldname, detailHero, JSON.parse(localStorage.getItem('user_data')).token));
+						}
 						dispatch(actions.updateHero());
 					})} }
 					text='Save'

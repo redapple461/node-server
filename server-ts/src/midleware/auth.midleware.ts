@@ -8,6 +8,7 @@ export const auth = (req, res, next) => {
 			console.log('No token');
 			return res.status(401).send({message: 'No token'});
 		}
+		console.log('auth: '+token);
 		const decoded = jwt.verify(token, config.get('jwtSecret'));
   		req.body.userData = decoded;
 		next();

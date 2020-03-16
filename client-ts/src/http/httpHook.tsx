@@ -23,7 +23,8 @@ export const addHero = (data: Hero, token: string) => {
 	}).then(res => res.json());
 };
 
-export const getByName = (name: string, token: string) => {
+export const getByName = async (name: string, token: string) => {
+	// console.log(token);
 	return fetch('http://localhost:4000/getHero/' + name, {
 		method: 'GET',
 		headers: {
@@ -105,7 +106,6 @@ export const updateUser = (id: string, token: string, user: User) => {
 };
 
 export const sendEmail = (email: string) => {
-	console.log(email);
 	return fetch(`http://localhost:4000/auth/forgot`, {
 		method: 'POST',
 		body: JSON.stringify({email}),
@@ -123,5 +123,15 @@ export const changePassword = (password: string, token: string) => {
 			'Content-Type': 'application/json',
 			Authorization: token
 		}
+	}).then(res => res.json());
+};
+
+export const updateToken = (refreshToken: string) => {
+	return fetch(`http://localhost:4000/auth/refreshToken`, {
+		method: 'POST',
+		headers: {
+			Authorization: refreshToken
+		},
+		body: JSON.stringify(refreshToken)
 	}).then(res => res.json());
 };

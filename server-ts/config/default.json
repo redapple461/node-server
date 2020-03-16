@@ -6,5 +6,6 @@
         "port": "27017",
         "name": "ToursOfHeroDB"
     },
-    "jwtSecret": "tutorial-IBA-gomel-APP"
+    "jwtSecret": "tutorial-IBA-gomel-APP",
+    "refreshSecret": "tutorial-refresh-token"
 }

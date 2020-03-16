@@ -46,7 +46,8 @@ export  const AuthPage = () => {
 			window.M.toast({html: `Hello ${res.user.name}`});
 			localStorage.setItem(storageName, JSON.stringify({
 				user: res.user,
-				token: res.token
+				token: res.authToken,
+				refreshToken: res.refreshToken
 			}));
 			dispatch(actions.setJWT(res.token));
 			dispatch(actions.setUser(res.user));

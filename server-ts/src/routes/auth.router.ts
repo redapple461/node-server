@@ -40,6 +40,7 @@ class AuthController {
 		);
 		this.router.post('/forgot', this.userController.getUser, this.forgotPassword);
 		this.router.post('/resetPassword', auth, this.changePassword, this.userController.updateUser);
+		this.router.post('/refreshToken', this.refreshToken);
 	}
 
 	private async register (req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -77,12 +78,16 @@ class AuthController {
 		if (!isPasswordsMatch) {
 			return res.status(400).send({error: 'Wrong password, try again'});
 		}
-		const token = jwt.sign(
+		const authToken = jwt.sign(
 			{ userId: user._id },
 			config.get('jwtSecret'),
-			{ expiresIn: '1m' }
+			{ expiresIn: '10s' }
 		);
-		res.send({ token, user});
+		const refreshToken = jwt.sign(
+			{userId: user._id},
+			config.get('refreshSecret')
+		);
+		res.send({ authToken, refreshToken, user});
 		} catch (e) {
         	console.log(e);
 			return res.status(500).send({error: 'Some server error'});
@@ -109,12 +114,13 @@ class AuthController {
 			}
    		});
 		const user = req.body.user;
-		const token = jwt.sign(
+		const authToken = jwt.sign(
 			{ userId: user._id },
-			config.get('jwtSecret')
+			config.get('jwtSecret'),
+			{ expiresIn: '10s' }
 		);
-		const urlReact = `http://localhost:3000/resetPassword/${token}`;
-		const urlAngular = `http://localhost:4200/resetPassword/${token}`
+		const urlReact = `http://localhost:3000/resetPassword/${authToken}`;
+		const urlAngular = `http://localhost:4200/resetPassword/${authToken}`
 		const data = {
 			to: user.email,
 			from: email,
@@ -135,6 +141,25 @@ class AuthController {
 			}
 			res.send({err: mailErr.message});
 		});
+	}
+
+	public async refreshToken (req: express.Request, res: express.Response) {
+		try {
+			const refreshToken = req.headers.authorization;
+			const userId = jwt.verify(refreshToken, config.get('refreshSecret'));
+			console.log(userId);
+			const token = jwt.sign(
+				{ userId },
+				config.get('jwtSecret'),
+				{ expiresIn: '10s' }
+			);
+			console.log(token);
+			jwt.verify(token, config.get('jwtSecret'));
+			res.send({token});
+		} catch (e) {
+			console.log('erpr ' + e);
+			res.status(401).send({message: e.message});
+		}
 	}
 }
 

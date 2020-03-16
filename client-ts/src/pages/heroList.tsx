@@ -7,7 +7,7 @@ import { Button } from '../components/button';
 import { RadioButton } from '../components/radio';
 import { HeroesList } from '../components/hList';
 import { EmptyHeroes } from '../components/emptyHeroes';
-import { getHeroes, addHero } from '../http/httpHook';
+import { getHeroes, addHero, updateToken } from '../http/httpHook';
 import { HeroStore } from '../interfaces/iStore/HeroStore';
 
 const HeroList = (props: any) => {
@@ -21,13 +21,30 @@ const HeroList = (props: any) => {
 	let timeout = null;
 	async function fetchData () {
 		try {
-			await getHeroes(token).then(res => {
+			await getHeroes(token).then(async res => {
 				if (res.message) {
 					window.M.toast({html: res.message});
 					if (res.message === 'jwt expired') {
-						return logout();
+						// alert('try to update token');
+						const refreshToken = JSON.parse(localStorage.getItem('user_data')).refreshToken;
+						// console.log('refresh '+refreshToken);
+						// console.log('auth '+JSON.parse(localStorage.getItem('user_data')).token);
+						return updateToken(refreshToken).then(async _res => {
+							// console.log(_res);
+							const newUserData = (JSON.parse(localStorage.getItem('user_data')));
+							newUserData.token = _res.token;
+							dispatch(actions.setJWT(_res.token));
+							// console.log('test '+token);
+							localStorage.setItem('user_data', JSON.stringify(newUserData));
+							window.M.toast({html: 'Token updated'});
+							// console.log('recursia');
+							await getHeroes(_res.token)
+								.then(data => {
+									res.sort((a, b) => a.id - b.id);
+									dispatch(actions.getData(data));
+								});
+						});
 					}
-					return;
 				}
 				res.sort((a, b) => a.id - b.id);
 				dispatch(actions.getData(res));
