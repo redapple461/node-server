@@ -40,7 +40,7 @@ export const deleteByName = (name: string, token: string) => {
 		headers: {
 			Authorization: token
 		}
-	});
+	}).then(res => res.json());
 };
 
 export const updateHero = (oldName: string, body: Hero,token: string) => {
@@ -67,7 +67,7 @@ export const signIn = (email: string, password: string) => {
 	}).then(res => res.json());
 };
 
-export const register =(email: string, password: string, name: string, surname: string, phone: string) => {
+export const register = (email: string, password: string, name: string, surname: string, phone: string) => {
 	return fetch('http://localhost:4000/auth/register', {
 		method: 'POST',
 		body: JSON.stringify({

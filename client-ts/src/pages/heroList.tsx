@@ -9,6 +9,7 @@ import { HeroesList } from '../components/hList';
 import { EmptyHeroes } from '../components/emptyHeroes';
 import { getHeroes, addHero, updateToken } from '../http/httpHook';
 import { HeroStore } from '../interfaces/iStore/HeroStore';
+import { refreshToken } from '../http/refreshToken.hook';
 
 const HeroList = (props: any) => {
 	const token = useSelector((state: HeroStore) => state.jwt);
@@ -69,7 +70,11 @@ const HeroList = (props: any) => {
 
 	const add = async () => {
 		try {
-			addHero(heroToAdd, token).then(res => {
+			addHero(heroToAdd, token).then(async res => {
+			if (res.message === 'jwt expired') {
+				window.M.toast({html: res.message});
+				await refreshToken(dispatch).then(_res => addHero(heroToAdd, JSON.parse(localStorage.getItem('user_data')).token));
+			}
 			(document.getElementById('add_btn') as HTMLInputElement).disabled = true;
 			dispatch(actions.addHero(res));
 			dispatch(actions.clearAddHero());
